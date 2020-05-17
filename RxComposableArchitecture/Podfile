@@ -6,8 +6,8 @@ target 'RxComposableArchitecture' do
   use_frameworks!
 
   # Pods for RxComposableArchitecture
-  pod 'RxSwift', '~> 5'
-  pod 'RxCocoa', '~> 5'
+  pod 'RxSwift', '~> 5.0'
+  pod 'RxCocoa', '~> 5.0'
   pod 'SwiftSpinner'
 
   target 'RxComposableArchitectureTests' do

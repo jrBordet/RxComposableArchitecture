@@ -1,12 +1,17 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
+ source "https://github.com/jrBordet/RxFramework.podspec.git"
+
 target 'RxComposableArchitectureDemo' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
   # Pods for RxComposableArchitectureDemo
-  pod 'RxComposableArchitecture', :path => '../RxComposableArchitecture'
+  # local pod
+  #pod 'RxComposableArchitecture', :path => '../RxComposableArchitecture'
+
+  pod 'RxComposableArchitecture', '1.0.0'
 
   target 'RxComposableArchitectureDemoTests' do
     inherit! :search_paths
