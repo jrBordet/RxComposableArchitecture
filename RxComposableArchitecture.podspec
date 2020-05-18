@@ -79,7 +79,7 @@ Pod::Spec.new do |spec|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  spec.source = { :git => "https://github.com/jrBordet/RxComposableArchitecture.git", :tag => "{spec.version}" }
+  spec.source = { :git => "https://github.com/jrBordet/RxComposableArchitecture.git", brach: => "master", :tag => "{spec.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -139,4 +139,6 @@ Pod::Spec.new do |spec|
   spec.dependency "SwiftSpinner"
 
 end
+
+
 
