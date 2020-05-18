@@ -8,6 +8,7 @@ Pod::Spec.new do |spec|
   spec.source       = { :git => 'https://github.com/jrBordet/RxComposableArchitecture.git', :tag => spec.version.to_s }
   spec.source_files = 'RxComposableArchitecture/**/*.{swift}'
   spec.requires_arc = true
+  spec.ios.deployment_target = '10.0'
   spec.dependency 'RxSwift'
   spec.dependency 'RxCocoa'
 end
