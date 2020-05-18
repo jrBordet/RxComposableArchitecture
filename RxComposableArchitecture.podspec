@@ -52,9 +52,9 @@ Pod::Spec.new do |spec|
   #  profile URL.
   #
 
-  spec.author             = { "Jean Raphaël Bordet" => "jr.bordet@gmail.it" }
-  # Or just: spec.author    = "Jean Raphaël Bordet"
-  # spec.authors            = { "Jean Raphaël Bordet" => "jr.bordet@gmail.it" }
+  spec.author             = { "Jean Raphaël Bordet" => "jr.bordet@gmail.it" }
+  # Or just: spec.author    = "Jean Raphaël Bordet"
+  # spec.authors            = { "Jean Raphaël Bordet" => "jr.bordet@gmail.it" }
   spec.social_media_url   = "https://twitter.com/jrBordet"
 
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -79,7 +79,7 @@ Pod::Spec.new do |spec|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  spec.source = { :git => "https://github.com/jrBordet/RxComposableArchitecture.git", brach: => "master", :tag => "{spec.version}" }
+  spec.source = { :git => "https://github.com/jrBordet/RxComposableArchitecture.git", branch: => "master", :tag => "{spec.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
