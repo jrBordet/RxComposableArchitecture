@@ -8,7 +8,7 @@
 
 import RxSwift
 import RxCocoa
-#import SwiftSpinner
+//import SwiftSpinner
 
 extension Reactive where Base: UIView {
     /// Bindable sink for `hidden` property.
