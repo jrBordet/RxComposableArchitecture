@@ -1,15 +1,15 @@
 //
-//  RxComposableArchitectureTests.swift
-//  RxComposableArchitectureTests
+//  RxComposableArchitectureDemoTests.swift
+//  RxComposableArchitectureDemoTests
 //
-//  Created by Jean Raphael Bordet on 17/05/2020.
+//  Created by Jean Raphael Bordet on 22/05/2020.
 //  Copyright © 2020 Jean Raphael Bordet. All rights reserved.
 //
 
 import XCTest
-@testable import RxComposableArchitecture
+@testable import RxComposableArchitectureDemo
 
-class RxComposableArchitectureTests: XCTestCase {
+class RxComposableArchitectureDemoTests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.

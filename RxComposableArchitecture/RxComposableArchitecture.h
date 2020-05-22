@@ -2,7 +2,7 @@
 //  RxComposableArchitecture.h
 //  RxComposableArchitecture
 //
-//  Created by Jean Raphael Bordet on 17/05/2020.
+//  Created by Jean Raphael Bordet on 22/05/2020.
 //  Copyright © 2020 Jean Raphael Bordet. All rights reserved.
 //
 
