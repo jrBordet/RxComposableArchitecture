@@ -1,8 +1,8 @@
 # Uncomment the next line to define a global platform for your project
  platform :ios, '10.0'
 
- source 'https://github.com/jrBordet/RxFramework.podspec.git'
- source 'https://cdn.cocoapods.org/'
+source 'https://github.com/jrBordet/RxFramework.podspec.git'
+source 'https://cdn.cocoapods.org/'
 
 target 'RxComposableArchitectureDemo' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -27,9 +27,9 @@ target 'RxComposableArchitecture' do
    pod 'RxCocoa', '~> 5'
    pod 'SwiftSpinner', '~> 2.1.0'
 
-  target 'RxComposableArchitectureTests' do
-    # Pods for testing
+  # target 'RxComposableArchitectureTests' do
+  #   # Pods for testing
     
-  end
+  # end
 
 end

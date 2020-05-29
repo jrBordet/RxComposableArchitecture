@@ -1,0 +1,32 @@
+name: RxComposableArchitectureDemo
+options: # Some general settings for the project
+    bundleIdPrefix: com.rxcomposablearchitecturedemo
+    createIntermediateGroups: true # If the folders are nested, also nest the groups in Xcode
+#    indentWidth: 2 # indent by 2 spaces
+#    tabWidth: 2 # a tab is 2 spaces
+settings:
+    DEVELOPMENT_TEAM: None
+targets:
+  RxComposableArchitectureDemo:
+    type: application
+    platform: iOS
+    deploymentTarget: 10.0
+    sources:
+        - path: RxComposableArchitectureDemo
+    dependencies:
+        - target: RxComposableArchitecture
+  RxComposableArchitectureDemoTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: 10.0
+    sources:
+        - path: RxComposableArchitectureDemoTests
+    dependencies:
+        - target: RxComposableArchitectureDemo
+  # RxComposableArchitecture pod library
+  RxComposableArchitecture:
+    type: framework
+    platform: iOS
+    deploymentTarget: 10.0
+    sources:
+        - path: RxComposableArchitecture
