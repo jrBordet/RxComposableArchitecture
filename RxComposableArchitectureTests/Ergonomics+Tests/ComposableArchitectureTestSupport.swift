@@ -10,20 +10,20 @@ import RxSwift
 import RxComposableArchitecture
 import XCTest
 
-enum StepType {
+public enum StepType {
     case send
     case sendSync
     case receive
 }
 
-struct Step<Value, Action> {
+public struct Step<Value, Action> {
     let type: StepType
     let action: Action
     let update: (inout Value) -> Void
     let file: StaticString
     let line: UInt
     
-    init(
+    public init(
         _ type: StepType,
         _ action: Action,
         file: StaticString = #file,
@@ -38,7 +38,7 @@ struct Step<Value, Action> {
     }
 }
 
-func assert<Value: Equatable, Action: Equatable, Environment>(
+public func assert<Value: Equatable, Action: Equatable, Environment>(
     initialValue: Value,
     reducer: Reducer<Value, Action, Environment>,
     environment: Environment,
