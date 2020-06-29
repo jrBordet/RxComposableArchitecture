@@ -6,10 +6,21 @@
 To run the project, clone the repo, and run `pod install` from the root directory first.
 
 ```ruby
-source "https://github.com/jrBordet/RxFramework.podspec.git"
-source "https://cdn.cocoapods.org/"
+source 'https://github.com/jrBordet/Sources.git'
+source 'https://cdn.cocoapods.org/'
+
+target 'Target' do
 
 pod 'RxComposableArchitecture', '1.0.0'
+
+  target 'TargetTests' do
+    inherit! :search_paths
+    # Pods for testing
+    pod 'RxComposableArchitectureTests', '1.0.0'
+  end
+
+end
+
 ```
 
 ```ruby
@@ -31,4 +42,4 @@ Jean Raphaël Bordet, jr.bordet@gmail.com
 
 ## License
 
-RxPrimeTime is available under the MIT license. See the LICENSE file for more info.
+RxComposableArchitecture is available under the MIT license. See the LICENSE file for more info.
