@@ -24,9 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window?.makeKeyAndVisible()
         self.window?.backgroundColor = .white
-        
-        prova()
-        
+                
         return true
     }
 }

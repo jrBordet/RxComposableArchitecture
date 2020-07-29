@@ -9,6 +9,11 @@
 import RxSwift
 import RxComposableArchitecture
 import XCTest
+import Difference
+
+public func XCTAssertEqual<T: Equatable>(_ expected: T, _ received: T, file: StaticString = #file, line: UInt = #line) {
+    XCTAssertTrue(expected == received, "Found difference for \n" + diff(expected, received).joined(separator: ", "), file: file, line: line)
+}
 
 public enum StepType {
     case send
@@ -72,11 +77,8 @@ public func assert<Value: Equatable, Action: Equatable, Environment>(
             
             effect
                 .subscribe(
-                    onNext: {
-                        action = $0
-                }, onCompleted: {
-                    receivedCompletion.fulfill()
-                })
+                    onNext: { action = $0},
+                    onCompleted: { receivedCompletion.fulfill() })
                 .disposed(by: disposeBag)
             
             if XCTWaiter.wait(for: [receivedCompletion], timeout: 1) != .completed {
@@ -84,7 +86,9 @@ public func assert<Value: Equatable, Action: Equatable, Environment>(
             }
             
             XCTAssertEqual(action, step.action, file: step.file, line: step.line)
+            
             effects.append(contentsOf: reducer(&state, action, environment))
+            
         case .sendSync:
             if effects.isEmpty == false {
                 XCTFail("Action sent before handling \(effects.count) pending effect(s)", file: step.file, line: step.line)
@@ -94,6 +98,7 @@ public func assert<Value: Equatable, Action: Equatable, Environment>(
         }
         
         step.update(&expected)
+        
         XCTAssertEqual(state, expected, file: step.file, line: step.line)
     }
     

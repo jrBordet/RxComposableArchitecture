@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina3_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ViewController" customModule="RxComposableArchitectureDemo" customModuleProvider="target">
             <connections>
+                <outlet property="counter" destination="4MI-bI-kg1" id="wOv-Vb-oZy"/>
+                <outlet property="decr" destination="uKE-HO-CXn" id="DSN-BK-mo2"/>
+                <outlet property="incr" destination="ywO-gh-fAh" id="aVx-ga-gNq"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -24,15 +27,38 @@
                     <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="16G-nq-UqW">
+                    <rect key="frame" x="125" y="298" width="70.5" height="70"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uKE-HO-CXn">
+                            <rect key="frame" x="0.0" y="0.0" width="30" height="70"/>
+                            <state key="normal" title="-"/>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4MI-bI-kg1">
+                            <rect key="frame" x="30" y="0.0" width="10.5" height="70"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="0.098039215690000001" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ywO-gh-fAh">
+                            <rect key="frame" x="40.5" y="0.0" width="30" height="70"/>
+                            <state key="normal" title="+"/>
+                        </button>
+                    </subviews>
+                </stackView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="U4M-4x-GWC" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="466-jN-Nt5"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="U4M-4x-GWC" secondAttribute="trailing" constant="15" id="BNA-Lq-aKI"/>
+                <constraint firstItem="16G-nq-UqW" firstAttribute="top" secondItem="U4M-4x-GWC" secondAttribute="bottom" constant="21" id="NIC-hh-g9t"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="16G-nq-UqW" secondAttribute="bottom" constant="112" id="aXd-Kf-ui3"/>
                 <constraint firstItem="U4M-4x-GWC" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="15" id="fVf-mu-ab8"/>
+                <constraint firstItem="16G-nq-UqW" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="iK0-iW-Skv"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <point key="canvasLocation" x="141" y="154"/>
+            <point key="canvasLocation" x="140.625" y="153.75"/>
         </view>
     </objects>
 </document>

@@ -1,8 +1,8 @@
 Pod::Spec.new do |spec|
-  spec.name         = 'RxComposableArchitecture'
-  spec.version      = '1.0.0'
+  spec.name         = 'RxComposableArchitectureTests'
+  spec.version      = '1.2.0'
   spec.license      = 'MIT'
-  spec.summary      = 'An ergonomic library for Unit Tests based on RxComposableArchitecture.'
+  spec.summary      = 'A Rx version of ComposableArchitecture.'
   spec.homepage     = 'https://github.com/jrBordet/RxComposableArchitecture.git'
   spec.author       = 'Jean Raphaël Bordet'
   spec.source       = { :git => 'https://github.com/jrBordet/RxComposableArchitecture.git', :tag => spec.version.to_s }
@@ -11,4 +11,7 @@ Pod::Spec.new do |spec|
   spec.ios.deployment_target = '10.0'
   spec.dependency 'RxSwift', '~> 5'
   spec.dependency 'RxCocoa', '~> 5'
+  spec.dependency 'RxComposableArchitecture', '1.0.0'
+  spec.dependency 'Difference', '0.4'
+  spec.weak_framework = 'XCTest'
 end

@@ -21,8 +21,10 @@ targets:
     deploymentTarget: 10.0
     sources:
         - path: RxComposableArchitectureDemoTests
+        - path: RxComposableArchitectureTests
     dependencies:
         - target: RxComposableArchitectureDemo
+        #- target: RxComposableArchitectureTests
   # RxComposableArchitecture pod library
   RxComposableArchitecture:
     type: framework
@@ -30,3 +32,9 @@ targets:
     deploymentTarget: 10.0
     sources:
         - path: RxComposableArchitecture
+  # RxComposableArchitectureTests:
+  #   type: framework
+  #   platform: iOS
+  #   deploymentTarget: 10.0
+  #   sources:
+  #       - path: RxComposableArchitectureTests
