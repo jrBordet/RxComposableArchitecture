@@ -17,14 +17,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
-                
+        
+        let store = applicationStore.view(
+            value: { $0.counter },
+            action: { AppAction.counter($0) }
+        )
+        
         let rootScene = Scene<ViewController>().render()
-                    
+        
+        rootScene.store = store
+        
         self.window?.rootViewController = UINavigationController(rootViewController: rootScene)
         
         self.window?.makeKeyAndVisible()
         self.window?.backgroundColor = .white
-                
+        
         return true
     }
 }

@@ -31,17 +31,6 @@ public struct CounterViewState: Equatable {
 
 public enum CounterViewAction: Equatable {
     case counter(CounterAction)
-    
-    var counter: CounterAction? {
-        get {
-            guard case let .counter(value) = self else { return nil }
-            return value
-        }
-        set {
-            guard case .counter = self, let newValue = newValue else { return }
-            self = .counter(newValue)
-        }
-    }
 }
 
 public typealias CounterViewEnvironment = (
@@ -53,7 +42,7 @@ public let counterViewReducer: Reducer<CounterViewState, CounterViewAction, Coun
     pullback(
         counterReducer,
         value: \CounterViewState.counter,
-        action: \CounterViewAction.counter,
+        action: /CounterViewAction.counter,
         environment: { $0.counter }
     )
 )
