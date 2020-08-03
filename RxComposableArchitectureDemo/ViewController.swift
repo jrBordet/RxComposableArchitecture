@@ -85,6 +85,13 @@ class ViewController: UIViewController {
             dump(token)
         }
         
+       let auth2 = Result<Authentication, Error>.successCasePath .. authenticatedCasePath
+
+        let getAuth = ^authenticatedCasePath
+        if let accessToken = getAuth(Authentication.authenticated(AccessToken(token: "KJKJ"))) {
+            dump(accessToken)
+        }
+        
     }
     
 }
