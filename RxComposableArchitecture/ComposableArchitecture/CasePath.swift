@@ -103,16 +103,6 @@ public prefix func / <Root, Value>(
     return CasePath(`case`)
 }
 
-//public func extract<Root, Value>(from root: Root) -> Value? {
-//    let mirror = Mirror.init(reflecting: root)
-//
-//    guard let child = mirror.children.first else {
-//        return nil
-//    }
-//
-//    return child.value as? Value
-//}
-
 public func extract<Root, Value>(case: String, from root: Root) -> Value? {
     let mirror = Mirror(reflecting: root)
     
@@ -153,35 +143,6 @@ public func extractHelp<Root, Value>(
     }
     
     return value
-}
-
-//let successCasePath: CasePath<Result<Success, Failure>, Success>
-
-extension Result {
-    
-    public static var successCasePath: CasePath<Result, Success> {
-        CasePath<Result, Success>(
-            extract: { result in
-                if case let .success(success) = result {
-                    return success
-                }
-                return nil
-        },
-            embed: Result.success
-        )
-    }
-    
-    public static var failureCasePath: CasePath<Result, Failure> {
-        CasePath<Result, Failure>(
-            extract: { result in
-                if case let .failure(failure) = result {
-                    return failure
-                }
-                return nil
-        },
-            embed: Result.failure
-        )
-    }
 }
 
 
