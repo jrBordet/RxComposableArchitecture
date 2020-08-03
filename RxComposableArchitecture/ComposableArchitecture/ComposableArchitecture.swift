@@ -62,7 +62,8 @@ public final class Store<Value, Action> {
                 return []
         }, environment: self.environment)
         
-        self.value.subscribe(onNext: { (newValue: Value) in
+        self.value
+            .subscribe(onNext: { (newValue: Value) in
             localStore.value.accept(toLocalValue(newValue))
         }).disposed(by: localStore.disposeBag)
         
@@ -90,31 +91,55 @@ public func combine<Value, Action, Environment>(
  
  */
 
+//public func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction, LocalEnvironment, GlobalEnvironment>(
+//    _ reducer: @escaping Reducer<LocalValue, LocalAction, LocalEnvironment>,
+//    value: WritableKeyPath<GlobalValue, LocalValue>,
+//    action: WritableKeyPath<GlobalAction, LocalAction?>,
+//    environment: @escaping (GlobalEnvironment) -> LocalEnvironment
+//) -> Reducer<GlobalValue, GlobalAction, GlobalEnvironment> {
+//    return { globalValue, globalAction, globalEnvironment in
+//        guard let localAction = globalAction[keyPath: action] else {
+//            return []
+//        }
+//        //  var localValue = globalValue[keyPath: value]
+//        //  reducer(&localValue, action)
+//        //  globalValue[keyPath: value] = localValue
+//        
+//        // WritableKeyPath<GlobalValue, LocalValue>
+//        // \User.id as WritableKeyPath<User, Int>
+//        
+//        // That one line is simultaneously getting the local value, mutating it, and plugging it back into the global value.
+//        let localEffects = reducer(&globalValue[keyPath: value], localAction, environment(globalEnvironment))
+//        
+//        return localEffects.map { localEffect in
+//            localEffect.map { localAction -> GlobalAction in
+//                var globalAction = globalAction
+//                globalAction[keyPath: action] = localAction
+//                return globalAction
+//            }
+//        }
+//    }
+//}
+
 public func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction, LocalEnvironment, GlobalEnvironment>(
     _ reducer: @escaping Reducer<LocalValue, LocalAction, LocalEnvironment>,
     value: WritableKeyPath<GlobalValue, LocalValue>,
-    action: WritableKeyPath<GlobalAction, LocalAction?>,
+    action: CasePath<GlobalAction, LocalAction>,
     environment: @escaping (GlobalEnvironment) -> LocalEnvironment
 ) -> Reducer<GlobalValue, GlobalAction, GlobalEnvironment> {
-    return { globalValue, globalAction, globalEnvironment in
-        guard let localAction = globalAction[keyPath: action] else {
+    { globalValue, globalAction, globalEnvironment in
+        guard let localAction = action.extract(globalAction) else {
             return []
         }
-        //  var localValue = globalValue[keyPath: value]
-        //  reducer(&localValue, action)
-        //  globalValue[keyPath: value] = localValue
         
-        // WritableKeyPath<GlobalValue, LocalValue>
-        // \User.id as WritableKeyPath<User, Int>
-        let localEffects = reducer(&globalValue[keyPath: value], localAction, environment(globalEnvironment))
+        // That one line is simultaneously getting the local value, mutating it, and plugging it back into the global value.
+        let localEffects = reducer(
+            &globalValue[keyPath: value],
+            localAction,
+            environment(globalEnvironment)
+        )
         
-        return localEffects.map { localEffect in
-            localEffect.map { localAction -> GlobalAction in
-                var globalAction = globalAction
-                globalAction[keyPath: action] = localAction
-                return globalAction
-            }
-        }
+        return localEffects.map { $0.map(action.embed) }
     }
 }
 
@@ -123,11 +148,17 @@ public func logging<Value, Action, Environment>(
 ) -> Reducer<Value, Action, Environment> {
     return { value, action, environment in
         let effects = reducer(&value, action, environment)
-        
+        let _value = value
         return [.fireAndForget {
-            let str = "\(action)"
+                        
+            //print("Action: \(str.prefix(280))")
+            dump("Action: \(action)")
+            //print(value)
+            let mirror = Mirror(reflecting: _value)
             
-            print("Action: \(str.prefix(280))")
+            let sValue = mirror.children.map { $0.label }.compactMap { $0 }
+            
+            print(sValue)
             
             print("---")
             }] + effects

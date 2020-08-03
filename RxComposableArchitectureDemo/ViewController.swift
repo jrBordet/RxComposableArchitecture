@@ -11,6 +11,17 @@ import RxComposableArchitecture
 import RxSwift
 import SwiftSpinner
 
+enum Authentication {
+    case authenticated(AccessToken)
+    case unauthenticated
+}
+
+struct AccessToken {
+    var token: String
+}
+
+extension AccessToken: Equatable {}
+
 class ViewController: UIViewController {
     private let disposeBag = DisposeBag()
     @IBOutlet var decr: UIButton!
@@ -24,16 +35,14 @@ class ViewController: UIViewController {
         other: { .sync { true } }
     )
     
-    private var store: Store<CounterViewState, CounterViewAction>! = nil
+    public var store: Store<CounterViewState, CounterViewAction>! = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        store = Store<CounterViewState, CounterViewAction>(
-            initialValue: initalState,
-            reducer: counterViewReducer,
-            environment: env
-        )
+        guard let store = store else {
+            return
+        }
         
         decr.rx.tap.bind { [weak self] in self?.store.send(.counter(.decrTapped)) }.disposed(by: disposeBag)
         incr.rx.tap.bind { [weak self] in self?.store.send(.counter(.incrTapped)) }.disposed(by: disposeBag)
@@ -43,12 +52,13 @@ class ViewController: UIViewController {
             .map { String($0.count) }
             .bind(to: counter.rx.text)
             .disposed(by: disposeBag)
-
-        Observable<NSInteger>
-            .interval(1, scheduler: MainScheduler.instance)
-            .map { $0 <= 3 ? true : false }
+        
+        store
+            .value
+            .map { $0.isLoading }
             .asDriver(onErrorJustReturn: false)
             .drive(SwiftSpinner.shared.rx_visible)
             .disposed(by: disposeBag)
     }
+    
 }
