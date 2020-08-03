@@ -13,6 +13,26 @@ import RxComposableArchitecture
 enum Example {
     case foo(Int)
     case bar(Int)
+    
+    var foo: Int? {
+        get {
+            guard case let Example.foo(value) = self else {
+                return nil
+            }
+            
+            return value
+        }
+        
+        set {
+            guard
+                case Example.foo = self,
+                let newValue = newValue else {
+                    return
+            }
+            
+            self = Example.foo(newValue)
+        }
+    }
 }
 
 enum LoadState<A> {
