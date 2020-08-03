@@ -50,5 +50,19 @@ class ViewController: UIViewController {
             .asDriver(onErrorJustReturn: false)
             .drive(SwiftSpinner.shared.rx_visible)
             .disposed(by: disposeBag)
+        
+        Result<Int, Error>.successCasePath // CasePath<Result<Int, Error>, Int>
+        Result<Int, Error>.failureCasePath // CasePath<Result<Int, Error>, Error>
+                
+        if let result = Result<Int, Error>.successCasePath.extract(.success(5)) {
+            dump(result)
+        }
+        
+        if let error = Result<Int, Error>.failureCasePath.extract(.failure(NSError())) {
+            dump(error)
+        }
+        
+        
     }
+        
 }
