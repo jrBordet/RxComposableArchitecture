@@ -11,12 +11,12 @@ source 'https://cdn.cocoapods.org/'
 
 target 'Target' do
 
-pod 'RxComposableArchitecture', '1.0.0'
+pod 'RxComposableArchitecture', '2.0.0'
 
   target 'TargetTests' do
     inherit! :search_paths
     # Pods for testing
-    pod 'RxComposableArchitectureTests', '1.0.0'
+    pod 'RxComposableArchitectureTests', '2.0.0'
   end
 
 end
