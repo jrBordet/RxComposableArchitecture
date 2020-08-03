@@ -20,6 +20,9 @@ struct AccessToken {
     var token: String
 }
 
+extension AccessToken: Equatable {}
+
+
 class ViewController: UIViewController {
     private let disposeBag = DisposeBag()
     @IBOutlet var decr: UIButton!
@@ -91,6 +94,27 @@ class ViewController: UIViewController {
         if let accessToken = getAuth(Authentication.authenticated(AccessToken(token: "KJKJ"))) {
             dump(accessToken)
         }
+        
+        let authentications: [Authentication] = [
+          .authenticated(AccessToken(token: "deadbeef")),
+          .unauthenticated,
+          .authenticated(AccessToken(token: "cafed00d"))
+        ]
+
+        let r1 = authentications
+          .compactMap(^authenticatedCasePath)
+        
+        dump(r1)
+
+        let r2 = authentications
+          .compactMap { authentication -> AccessToken? in
+            if case let .authenticated(accessToken) = authentication {
+              return accessToken
+            }
+            return nil
+        }
+        
+        dump(r2)
         
     }
     

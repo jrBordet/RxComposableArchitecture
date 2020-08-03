@@ -42,8 +42,17 @@ public struct CasePath<Root, Value> {
     }
 }
 
+extension CasePath {
+    public init(_ case: @escaping (Value) -> Root) {
+        self.embed = `case`
+        self.extract = { root in
+            extractHelp(case: `case`, from: root)
+        }
+    }
+}
+
 extension CasePath where Root == Value {
-    public  static var `self`: CasePath {
+    public static var `self`: CasePath {
         CasePath(
             extract: { .some($0) },
             embed: { $0 }
@@ -84,6 +93,66 @@ public prefix func ^ <Root, Value>(
     path: CasePath<Root, Value>
 ) -> (Root) -> Value? {
     return path.extract
+}
+
+prefix operator /
+
+public prefix func / <Root, Value>(
+    case: @escaping (Value) -> Root
+) -> CasePath<Root, Value> {
+    return CasePath(`case`)
+}
+
+//public func extract<Root, Value>(from root: Root) -> Value? {
+//    let mirror = Mirror.init(reflecting: root)
+//
+//    guard let child = mirror.children.first else {
+//        return nil
+//    }
+//
+//    return child.value as? Value
+//}
+
+public func extract<Root, Value>(case: String, from root: Root) -> Value? {
+    let mirror = Mirror(reflecting: root)
+    
+    guard let child = mirror.children.first else {
+        return nil
+    }
+    
+    guard `case` == child.label else {
+        return nil
+    }
+    
+    return child.value as? Value
+}
+
+public func extractHelp<Root, Value>(
+    case: @escaping (Value) -> Root,
+    from root: Root
+) -> Value? {
+    let mirror = Mirror(reflecting: root)
+    
+    guard let child = mirror.children.first else {
+        return nil
+    }
+    
+    guard let value = child.value as? Value else {
+        return nil
+    }
+    
+    let newRoot = `case`(value)
+    let newMirror = Mirror(reflecting: newRoot)
+    
+    guard let newChild = newMirror.children.first else {
+        return nil
+    }
+    
+    guard newChild.label == child.label else {
+        return nil
+    }
+    
+    return value
 }
 
 //let successCasePath: CasePath<Result<Success, Failure>, Success>
