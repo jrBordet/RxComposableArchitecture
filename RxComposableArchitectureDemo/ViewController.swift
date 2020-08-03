@@ -11,6 +11,15 @@ import RxComposableArchitecture
 import RxSwift
 import SwiftSpinner
 
+enum Authentication {
+    case authenticated(AccessToken)
+    case unauthenticated
+}
+
+struct AccessToken {
+    var token: String
+}
+
 class ViewController: UIViewController {
     private let disposeBag = DisposeBag()
     @IBOutlet var decr: UIButton!
@@ -43,7 +52,7 @@ class ViewController: UIViewController {
             .map { String($0.count) }
             .bind(to: counter.rx.text)
             .disposed(by: disposeBag)
-
+        
         Observable<NSInteger>
             .interval(1, scheduler: MainScheduler.instance)
             .map { $0 <= 3 ? true : false }
@@ -53,16 +62,29 @@ class ViewController: UIViewController {
         
         Result<Int, Error>.successCasePath // CasePath<Result<Int, Error>, Int>
         Result<Int, Error>.failureCasePath // CasePath<Result<Int, Error>, Error>
-                
+        
         if let result = Result<Int, Error>.successCasePath.extract(.success(5)) {
             dump(result)
         }
         
-        if let error = Result<Int, Error>.failureCasePath.extract(.failure(NSError())) {
-            dump(error)
+//        if let error = Result<Int, Error>.failureCasePath.extract(.failure(NSError())) {
+//            dump(error)
+//        }
+        
+        let authenticatedCasePath = CasePath<Authentication, AccessToken>(
+            extract: {
+                if case let .authenticated(accessToken) = $0 { return accessToken }
+                return nil
+        },
+            embed: Authentication.authenticated
+        )
+        
+        let auth = Result<Authentication, Error>.successCasePath.appending(path: authenticatedCasePath)
+        
+        if let token = auth.extract(.success(.authenticated(AccessToken(token: "LKJKJ")))) {
+            dump(token)
         }
         
-        
     }
-        
+    
 }

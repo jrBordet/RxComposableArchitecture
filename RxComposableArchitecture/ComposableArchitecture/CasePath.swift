@@ -51,6 +51,20 @@ extension CasePath where Root == Value {
     }
 }
 
+extension CasePath {
+    public func appending<AppendedValue>(
+        path: CasePath<Value, AppendedValue>
+    ) -> CasePath<Root, AppendedValue> {
+        CasePath<Root, AppendedValue>(
+            extract: { root in
+                self.extract(root).flatMap(path.extract)
+        },
+            embed: { appendedValue in
+                self.embed(path.embed(appendedValue))
+        })
+    }
+}
+
 //let successCasePath: CasePath<Result<Success, Failure>, Success>
 
 extension Result {
