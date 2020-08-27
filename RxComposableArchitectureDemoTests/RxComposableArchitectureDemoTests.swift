@@ -14,7 +14,7 @@ import RxSwift
 import RxCocoa
 
 class RxComposableArchitectureDemoTests: XCTestCase {
-    var initalState: CounterViewState! = CounterViewState(count: 0, isLoading: false, alertNthPrime: nil)
+    var initialState: CounterViewState! = CounterViewState(count: 0, isLoading: false, alertNthPrime: nil)
     
     let env: CounterViewEnvironment = (
         counter: { _ in .sync { 5 } },
@@ -22,7 +22,7 @@ class RxComposableArchitectureDemoTests: XCTestCase {
     )
     
     override func setUp() {
-        initalState = CounterViewState(count: 0, isLoading: false, alertNthPrime: nil)
+        initialState = CounterViewState(count: 0, isLoading: false, alertNthPrime: nil)
     }
     
     override func tearDown() {
@@ -31,7 +31,7 @@ class RxComposableArchitectureDemoTests: XCTestCase {
     
     func test_counter_incr() {
         assert(
-            initialValue: initalState,
+            initialValue: initialState,
             reducer: counterViewReducer,
             environment: env,
             steps:
@@ -46,7 +46,7 @@ class RxComposableArchitectureDemoTests: XCTestCase {
     
     func test_counter_decr() {
         assert(
-            initialValue: initalState,
+            initialValue: initialState,
             reducer: counterViewReducer,
             environment: env,
             steps: Step(.send, .counter(.decrTapped), { state in
@@ -57,7 +57,7 @@ class RxComposableArchitectureDemoTests: XCTestCase {
     
     func test_counter_nthPrimeTapped() {
         assert(
-            initialValue: initalState,
+            initialValue: initialState,
             reducer: counterViewReducer,
             environment: env,
             steps:
