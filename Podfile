@@ -21,11 +21,17 @@ target 'RxComposableArchitectureDemo' do
 
 end
 
-# target 'RxComposableArchitectureTests' do
-#     pod 'Difference', '0.4'
-#     pod 'RxSwift', '~> 5'
-#     pod 'RxCocoa', '~> 5'
-# end
+target 'Login' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for RxComposableArchitecture
+   pod 'RxSwift', '~> 5'
+   pod 'RxCocoa', '~> 5'
+   pod 'SwiftSpinner', '~> 2.1.0'
+   pod 'Difference', '0.4'
+
+end
 
 target 'RxComposableArchitecture' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -36,10 +42,5 @@ target 'RxComposableArchitecture' do
    pod 'RxCocoa', '~> 5'
    pod 'SwiftSpinner', '~> 2.1.0'
    pod 'Difference', '0.4'
-
-  # target 'RxComposableArchitectureTests' do
-  #   # Pods for testing
-    
-  # end
 
 end
