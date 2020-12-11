@@ -15,6 +15,7 @@ target 'RxComposableArchitectureDemo' do
     inherit! :search_paths
     # Pods for testing
     pod 'Difference', '0.4'
+    pod 'SnapshotTesting', '~> 1.7.2'
     pod 'RxSwift', '~> 5'
     pod 'RxCocoa', '~> 5'
   end

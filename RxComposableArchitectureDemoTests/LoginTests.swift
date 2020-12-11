@@ -13,10 +13,9 @@ import RxComposableArchitecture
 import RxSwift
 import RxCocoa
 
-let envLoginSuccess: (String, String) -> Effect<Result<String, LoginError>> =  {  _,_ in .sync { .success("") } }
-let envLoginFailureGeneric: (String, String) -> Effect<Result<String, LoginError>> =  {  _,_ in .sync { .failure(.generic) } }
-let envLoginFailureCredentials: (String, String) -> Effect<Result<String, LoginError>> =  {  _,_ in .sync { .failure(.invalidCredentials("invalid credentials")) } }
-
+let envLoginSuccess: Login =  {  _,_ in .sync { .success("message") } }
+let envLoginFailureGeneric: Login =  {  _,_ in .sync { .failure(.generic) } }
+let envLoginFailureCredentials: Login =  {  _,_ in .sync { .failure(.invalidCredentials("invalid credentials")) } }
 
 class LoginTests: XCTestCase {
     var initialState: LoginViewState = LoginViewState(
@@ -24,12 +23,15 @@ class LoginTests: XCTestCase {
         password: "",
         isLoading: false,
         isEnabled: false,
-        alert: nil
+        alert: nil,
+        rememberMeStatus: false
     )
     
     let env: LoginViewEnvironment = (
         login: envLoginSuccess,
-        saveCredentials: { _,_ in  .sync { true } }
+        saveCredentials: { _,_ in  .sync { true } },
+        retrieveCredentials: { username in .sync { ("fake@email.com", "Aa123123") } },
+        ereaseCredentials: { username in .sync { true } }
     )
     
     override func setUpWithError() throws {
@@ -46,8 +48,30 @@ class LoginTests: XCTestCase {
             reducer: loginViewReducer,
             environment: env,
             steps:
-            Step(.send, LoginViewAction.login(LoginAction.userame("fake@mail.com")), { state in
-                state.username = "fake@mail.com"
+            Step(.send, .login(.password("Aa123123")), { state in
+                state.password = "Aa123123"
+            }),
+            Step(.send, .login(.username("fake@gmail.com")), { state in
+                state.username = "fake@gmail.com"
+                state.isEnabled = true
+            })
+        )
+    }
+    
+    func test_insert_username_empty_password() {
+        assert(
+            initialValue: initialState,
+            reducer: loginViewReducer,
+            environment: env,
+            steps:
+            Step(.send, .login(.username("fake@gmail.com")), { state in
+                state.username = "fake@gmail.com"
+                state.isEnabled = false
+            }),
+            Step(.send, .login(.password("")), { state in
+                state.username = "fake@gmail.com"
+                state.password = ""
+                state.isEnabled = false
             })
         )
     }
@@ -58,8 +82,111 @@ class LoginTests: XCTestCase {
             reducer: loginViewReducer,
             environment: env,
             steps:
-            Step(.send, LoginViewAction.login(LoginAction.password("Aa123123")), { state in
+            Step(.send, .login(.username("fake@gmail.com")), { state in
+                state.username = "fake@gmail.com"
+                state.isEnabled = false
+            }),
+            Step(.send, .login(.password("Aa123123")), { state in
                 state.password = "Aa123123"
+                state.isEnabled = true
+            })
+        )
+    }
+    
+    func test_username_validation() {
+        assert(
+            initialValue: initialState,
+            reducer: loginViewReducer,
+            environment: env,
+            steps:
+            Step(.send, .login(.username("wrong_username")), { state in
+                state.username = "wrong_username"
+                state.isEnabled = false
+            }),
+            Step(.send, .login(.username("email@gmail.com")), { state in
+                state.username = "email@gmail.com"
+                state.isEnabled = false
+            })
+        )
+    }
+    
+    func test_remember_me_filled_username_password() {
+        assert(
+            initialValue: initialState,
+            reducer: loginViewReducer,
+            environment: env,
+            steps:
+            Step(.send, .login(.username("fake@gmail.com")), { state in
+                state.username = "fake@gmail.com"
+                state.isEnabled = false
+            }),
+            Step(.send, .login(.password("Aa123123")), { state in
+                state.password = "Aa123123"
+                state.isEnabled = true
+            }),
+            Step(.send, .login(.rememberMe(true)), { state in
+                state.rememberMeStatus = true
+            }),
+            Step(.receive, .login(.rememberMeResponse(true)), { _ in
+                
+            })
+        )
+    }
+    
+    func test_remember_me_empty_username_password() {
+        assert(
+            initialValue: initialState,
+            reducer: loginViewReducer,
+            environment: env,
+            steps:
+            Step(.send, .login(.rememberMe(true)), { state in
+                state.rememberMeStatus = false
+            })
+        )
+    }
+    
+    func test_retrieve_credentials() {
+        assert(
+            initialValue: initialState,
+            reducer: loginViewReducer,
+            environment: env,
+            steps:
+            Step(.send, .login(.retrieveCredentials), { _ in
+                
+            }),
+            Step(.receive, .login(.retrieveCredentialsResponse("fake@email.com", "Aa123123")), { state in
+                state.username = "fake@email.com"
+                state.password = "Aa123123"
+                state.isEnabled = true
+            })
+        )
+    }
+    
+    func test_username_autocomplete() {
+        let initialState: LoginViewState = LoginViewState(
+            username: "",
+            password: "",
+            isLoading: false,
+            isEnabled: false,
+            alert: nil,
+            rememberMeStatus: true
+        )
+        
+        assert(
+            initialValue: initialState,
+            reducer: loginViewReducer,
+            environment: env,
+            steps:
+            Step(.send, .login(.username("fak")), { state in
+                state.username = "fak"
+                state.isEnabled = false
+                state.rememberMeStatus = true
+            }),
+            Step(.receive, .login(.retrieveCredentialsResponse("fake@email.com", "Aa123123")), { state in
+                state.username = "fake@email.com"
+                state.password = "Aa123123"
+                state.isEnabled = true
+                state.rememberMeStatus = true
             })
         )
     }
@@ -70,12 +197,15 @@ class LoginTests: XCTestCase {
             reducer: loginViewReducer,
             environment: env,
             steps:
-            Step(.send, LoginViewAction.login(LoginAction.login), { state in
+            Step(.send, LoginViewAction.login(.login), { state in
                 state.isLoading = true
             }),
-            Step(.receive, LoginViewAction.login(LoginAction.loginResponse(.success(""))), { state in
+            Step(.receive, LoginViewAction.login(.loginResponse(.success("message"))), { state in
                 state.isLoading = false
-                state.alert = LoginAlert(message: "")
+                state.alert = LoginAlert(message: "message")
+            }),
+            Step(.receive, LoginViewAction.login(LoginAction.none), { state in
+                
             })
         )
     }
@@ -83,7 +213,9 @@ class LoginTests: XCTestCase {
     func test_login_failure() {
         let env: LoginViewEnvironment = (
             login: envLoginFailureGeneric,
-            saveCredentials: { _,_ in  .sync { true } }
+            saveCredentials: { _,_ in  .sync { true } },
+            retrieveCredentials: { username in .sync { ("fake@email.com", "Aa123123") } },
+            ereaseCredentials: { username in .sync { true } }
         )
         
         assert(
@@ -91,12 +223,15 @@ class LoginTests: XCTestCase {
             reducer: loginViewReducer,
             environment: env,
             steps:
-            Step(.send, LoginViewAction.login(LoginAction.login), { state in
+            Step(.send, .login(.login), { state in
                 state.isLoading = true
             }),
-            Step(.receive, LoginViewAction.login(LoginAction.loginResponse(.failure(.generic))), { state in
+            Step(.receive, .login(.loginResponse(.failure(.generic))), { state in
                 state.isLoading = false
                 state.alert = nil
+            }),
+            Step(.receive, LoginViewAction.login(LoginAction.none), { state in
+                
             })
         )
     }
@@ -104,29 +239,29 @@ class LoginTests: XCTestCase {
     func test_login_failure_invalid_credentials() {
         let env: LoginViewEnvironment = (
             login: envLoginFailureCredentials,
-            saveCredentials: { _,_ in  .sync { true } }
+            saveCredentials: { _,_ in  .sync { true } },
+            retrieveCredentials: { username in .sync { ("fake@email.com", "Aa123123") } },
+            ereaseCredentials: { username in .sync { true } }
         )
         
-        assert(
-            initialValue: initialState,
-            reducer: loginViewReducer,
-            environment: env,
-            steps:
-            Step(.send, LoginViewAction.login(LoginAction.login), { state in
-                state.isLoading = true
-            }),
-            Step(.receive, LoginViewAction.login(LoginAction.loginResponse(.failure(.invalidCredentials("invalid credentials")))), { state in
-                state.alert = LoginAlert(message: "invalid credentials")
-                state.isLoading = false
-            })
-        )
-    }
-    
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
         self.measure {
-            // Put the code you want to measure the time of here.
+            assert(
+                initialValue: initialState,
+                reducer: loginViewReducer,
+                environment: env,
+                steps:
+                    Step(.send, .login(.login), { state in
+                        state.isLoading = true
+                    }),
+                Step(.receive, .login(LoginAction.loginResponse(.failure(.invalidCredentials("invalid credentials")))), { state in
+                    state.alert = LoginAlert(message: "invalid credentials")
+                    state.isLoading = false
+                }),
+                Step(.receive, LoginViewAction.login(LoginAction.none), { state in
+                    state.isLoading = false
+                })
+            )
         }
+        
     }
-    
 }

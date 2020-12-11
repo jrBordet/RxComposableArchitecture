@@ -42,16 +42,11 @@ public enum LoginViewAction: Equatable {
     case login(LoginAction)
 }
 
-public typealias Login = (_ username: String, _ password: String) -> Effect<Result<String, LoginError>>
-public typealias SaveCredentials = (_ username: String, _ password: String) -> Effect<Bool>
-public typealias RetrieveCredentials = (_ username: String) -> Effect<(String, String)>
-public typealias EreaseCredentials = (_ username: String) -> Effect<Bool>
-
 public typealias LoginViewEnvironment = (
-    login: Login,
-    saveCredentials: SaveCredentials,
-    retrieveCredentials: RetrieveCredentials,
-    ereaseCredentials: EreaseCredentials
+    login: (_ username: String, _ password: String) -> Effect<Result<String, LoginError>>,
+    saveCredentials: (_ username: String, _ password: String) -> Effect<Bool>,
+    retrieveCredentials: (_ username: String) -> Effect<(String, String)>,
+    ereaseCredentials: (_ username: String) -> Effect<Bool>
 )
 
 public let loginViewReducer: Reducer<LoginViewState, LoginViewAction, LoginViewEnvironment> = combine(

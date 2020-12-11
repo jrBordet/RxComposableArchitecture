@@ -10,6 +10,20 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+public protocol StoreViewController {
+    associatedtype Value
+    associatedtype Action
+    
+    var store: Store<Value, Action>? { get set }    
+}
+
+extension StoreViewController {
+    public func apply(block: @escaping(Self) -> Void) -> Self {
+        block(self)
+        return self
+    }
+}
+
 public typealias Effect<A> = Observable<A>
 
 public typealias Reducer<Value, Action, Environment> = (inout Value, Action, Environment) -> [Effect<Action>]
@@ -19,6 +33,8 @@ public final class Store<Value, Action> {
     
     public private(set) var value: BehaviorRelay<Value>
     
+    public private(set) var error: BehaviorRelay<Error?>
+    
     private let environment: Any
     
     private let disposeBag = DisposeBag()
@@ -26,7 +42,8 @@ public final class Store<Value, Action> {
     public init<Environment>(
         initialValue: Value,
         reducer: @escaping Reducer<Value, Action, Environment>,
-        environment: Environment
+        environment: Environment,
+        error: Error? = nil
     ) {        
         self.reducer = { value, action, environment in
             reducer(&value, action, environment as! Environment)
@@ -34,19 +51,29 @@ public final class Store<Value, Action> {
         
         self.value = BehaviorRelay<Value>(value: initialValue)
         
+        self.error = BehaviorRelay<Error?>(value: nil)
+        
         self.environment = environment
     }
     
-    public func send(_ action: Action) {
+    public func send(_ action: Action, error: Error? = nil) {
         var valueCopy = self.value.value
         let effects = self.reducer(&valueCopy, action, self.environment)
         
         self.value.accept(valueCopy)
         
         effects.forEach { effect in
-            effect.subscribe(onNext: { [weak self] (action: Action) in
+            effect.subscribe { [weak self] action in
                 self?.send(action)
-            }).disposed(by: disposeBag)
+            } onError: { [weak self] error in
+                guard let self = self else {
+                    return
+                }
+                
+                self.error.accept(error)
+            }
+            .disposed(by: disposeBag)
+
         }
     }
     
@@ -62,10 +89,14 @@ public final class Store<Value, Action> {
                 return []
         }, environment: self.environment)
         
-        self.value
-            .subscribe(onNext: { (newValue: Value) in
-            localStore.value.accept(toLocalValue(newValue))
-        }).disposed(by: localStore.disposeBag)
+        value.subscribe(onNext: { (newValue: Value) in
+                localStore.value.accept(toLocalValue(newValue))
+            }).disposed(by: localStore.disposeBag)
+        
+        error.subscribe(onNext:  { error in
+            localStore.error.accept(error)
+        }).disposed(by: disposeBag)
+
         
         return localStore
     }
@@ -151,9 +182,8 @@ public func logging<Value, Action, Environment>(
         let _value = value
         return [.fireAndForget {
                         
-            //print("Action: \(str.prefix(280))")
             dump("Action: \(action)")
-            //print(value)
+            
             let mirror = Mirror(reflecting: _value)
             
             let sValue = mirror.children.map { $0.label }.compactMap { $0 }

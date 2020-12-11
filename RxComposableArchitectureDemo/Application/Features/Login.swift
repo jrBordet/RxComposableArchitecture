@@ -61,12 +61,10 @@ public func loginReducer(
         }
         
         return []
-    case let .rememberMe(value):
+    case .rememberMe:
         guard state.isEnabled else {
             return []
         }
-        
-        state.rememberMeStatus = value
         
         return [
             environment.saveCredentials(state.username, state.password).map(LoginAction.rememberMeResponse)
@@ -93,7 +91,6 @@ public func loginReducer(
         ]
     case let .checkRememberMeStatusResponse(username, password):
         state.rememberMeStatus = username.isEmpty == false && password.isEmpty == false
-        
         return []
     case .none:
         return []
@@ -122,7 +119,7 @@ public enum LoginAction: Equatable {
     
     case checkRememberMeStatus
     case checkRememberMeStatusResponse(String, String)
-    case rememberMe(Bool)
+    case rememberMe
     case rememberMeResponse(Bool)
     
     case dismissAlert
