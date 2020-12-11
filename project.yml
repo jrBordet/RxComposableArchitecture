@@ -15,6 +15,7 @@ targets:
         - path: RxComposableArchitectureDemo
     dependencies:
         - target: RxComposableArchitecture
+        - target: Login
   RxComposableArchitectureDemoTests:
     type: bundle.unit-test
     platform: iOS
@@ -32,9 +33,11 @@ targets:
     deploymentTarget: 10.0
     sources:
         - path: RxComposableArchitecture
-  # RxComposableArchitectureTests:
-  #   type: framework
-  #   platform: iOS
-  #   deploymentTarget: 10.0
-  #   sources:
-  #       - path: RxComposableArchitectureTests
+  Login: # Feature
+    type: framework
+    platform: iOS
+    deploymentTarget: 10.0
+    sources:
+        - path: Login
+    dependencies:
+        - target: RxComposableArchitecture

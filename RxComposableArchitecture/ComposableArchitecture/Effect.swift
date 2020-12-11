@@ -9,6 +9,22 @@
 import Foundation
 import RxSwift
 
+public enum EffectError: Error {
+    case generic
+    case custom(String)
+}
+
+extension EffectError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .generic:
+            return NSLocalizedString("something goes wrong", comment: "")
+        case let .custom(title):
+            return NSLocalizedString(title, comment: "")
+        }
+    }
+}
+
 extension Effect {
     public static func fireAndForget(work: @escaping () -> Void) -> Effect {
         create { observer -> Disposable in
@@ -26,6 +42,15 @@ extension Effect {
             observer.onNext(work())
             observer.onCompleted()
             
+            return Disposables.create()
+        }
+    }
+    
+    public static func error(title: String) -> Effect {
+        create { observer -> Disposable in
+            
+            observer.onError(EffectError.custom(title))
+
             return Disposables.create()
         }
     }
