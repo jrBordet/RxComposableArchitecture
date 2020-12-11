@@ -22,20 +22,22 @@ struct AccessToken {
 
 extension AccessToken: Equatable {}
 
-class ViewController: UIViewController {
-    private let disposeBag = DisposeBag()
+class ViewController: UIViewController, StoreViewController {
     @IBOutlet var decr: UIButton!
     @IBOutlet var incr: UIButton!
     @IBOutlet var counter: UILabel!
     
-    let initalState = CounterViewState(count: 0, isLoading: false, alertNthPrime: nil)
-    
+    private let disposeBag = DisposeBag()
+        
     let env: CounterViewEnvironment = (
         counter: { _ in .sync { 5 } },
         other: { .sync { true } }
     )
     
-    public var store: Store<CounterViewState, CounterViewAction>! = nil
+    typealias Value = CounterViewState
+    typealias Action = CounterViewAction
+    
+    public var store: Store<CounterViewState, CounterViewAction>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,8 +46,8 @@ class ViewController: UIViewController {
             return
         }
         
-        decr.rx.tap.bind { [weak self] in self?.store.send(.counter(.decrTapped)) }.disposed(by: disposeBag)
-        incr.rx.tap.bind { [weak self] in self?.store.send(.counter(.incrTapped)) }.disposed(by: disposeBag)
+        decr.rx.tap.bind { _ in store.send(.counter(.decrTapped)) }.disposed(by: disposeBag)
+        incr.rx.tap.bind { _ in store.send(.counter(.incrTapped)) }.disposed(by: disposeBag)
         
         store
             .value
