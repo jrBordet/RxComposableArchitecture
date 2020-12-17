@@ -99,7 +99,7 @@ public func assert<Value: Equatable, Action: Equatable, Environment>(
         
         step.update(&expected)
         
-        XCTAssertEqual(state, expected, file: step.file, line: step.line)
+        XCTAssertEqual(expected, state, file: step.file, line: step.line)
     }
     
     if effects.isEmpty == false {
