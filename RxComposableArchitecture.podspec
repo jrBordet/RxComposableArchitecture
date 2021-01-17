@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = 'RxComposableArchitecture'
-  spec.version      = '2.1.1'
+  spec.version      = '2.1.2'
   spec.license      = 'MIT'
   spec.summary      = 'A Rx version of ComposableArchitecture.'
   spec.homepage     = 'https://github.com/jrBordet/RxComposableArchitecture.git'
