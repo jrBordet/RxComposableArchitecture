@@ -109,16 +109,7 @@ public class LoginViewController: UIViewController, StoreViewController {
         guard let store = self.store else {
             fatalError()
         }
-        
-        // MARK: - Generic error
-        
-        store
-            .error
-            .asObservable()
-            .errorAlertController()
-            .bind(to: self.rx.presentAlertError)
-            .disposed(by: disposeBag)
-        
+		
         // MARK: - Remember Me
         
         store.send(LoginViewAction.login(LoginAction.checkRememberMeStatus))
@@ -183,15 +174,15 @@ public class LoginViewController: UIViewController, StoreViewController {
         
         // MARK: - Login alert
         
-        store
-            .value
-            .map { $0.alert }
-            .distinctUntilChanged()
-            .map { $0?.content }
-            .map { $0 ?? "" }
-            .messageAlertController()
-            .bind(to: self.rx.presentAlertError)
-            .disposed(by: disposeBag)
+//        store
+//            .value
+//            .map { $0.alert }
+//            .distinctUntilChanged()
+//            .map { $0?.content }
+//            .map { $0 ?? "" }
+//            .messageAlertController()
+//            .bind(to: self.rx.presentAlertError)
+//            .disposed(by: disposeBag)
     }
     
     // MARK: - Init
