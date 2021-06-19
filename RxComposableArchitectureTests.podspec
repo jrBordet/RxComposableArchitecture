@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = 'RxComposableArchitectureTests'
-  spec.version      = '2.1.2'
+  spec.version      = '2.1.3'
   spec.license      = 'MIT'
   spec.summary      = 'A Rx version of ComposableArchitecture.'
   spec.homepage     = 'https://github.com/jrBordet/RxComposableArchitecture.git'
@@ -11,7 +11,7 @@ Pod::Spec.new do |spec|
   spec.ios.deployment_target = '10.0'
   spec.dependency 'RxSwift', '~> 5'
   spec.dependency 'RxCocoa', '~> 5'
-  spec.dependency 'RxComposableArchitecture', '2.1.2'
+  spec.dependency 'RxComposableArchitecture', '2.1.3'
   spec.dependency 'Difference', '0.4'
   spec.weak_framework = 'XCTest'
 end
