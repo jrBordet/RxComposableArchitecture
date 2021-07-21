@@ -16,8 +16,8 @@ target 'RxComposableArchitectureDemo' do
     # Pods for testing
     pod 'Difference', '0.4'
     pod 'SnapshotTesting', '~> 1.7.2'
-    pod 'RxSwift', '~> 5'
-    pod 'RxCocoa', '~> 5'
+    pod 'RxSwift', '6.2.0'
+    pod 'RxCocoa', '6.2.0'
   end
 
 end
@@ -27,8 +27,8 @@ target 'Login' do
   use_frameworks!
 
   # Pods for RxComposableArchitecture
-   pod 'RxSwift', '~> 5'
-   pod 'RxCocoa', '~> 5'
+   pod 'RxSwift', '6.2.0'
+   pod 'RxCocoa', '6.2.0'
    pod 'SwiftSpinner', '~> 2.1.0'
    pod 'Difference', '0.4'
 
@@ -39,8 +39,8 @@ target 'RxComposableArchitecture' do
   use_frameworks!
 
   # Pods for RxComposableArchitecture
-   pod 'RxSwift', '~> 5'
-   pod 'RxCocoa', '~> 5'
+   pod 'RxSwift', '6.2.0'
+   pod 'RxCocoa', '6.2.0'
    pod 'SwiftSpinner', '~> 2.1.0'
    pod 'Difference', '0.4'
 

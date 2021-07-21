@@ -12,7 +12,7 @@ var applicationStore: Store<AppState, AppAction> =
   Store(
     initialValue: initialAppState,
     reducer: with(
-      appReducer,
+		appReducer,
       compose(
         logging,
         activityFeed

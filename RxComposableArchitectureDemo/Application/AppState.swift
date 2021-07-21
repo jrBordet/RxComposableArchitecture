@@ -72,9 +72,9 @@ let initialAppState = AppState(
 )
 
 func activityFeed(
-    _ reducer: @escaping Reducer<AppState, AppAction, AppEnvironment>
+    _ reducer: Reducer<AppState, AppAction, AppEnvironment>
 ) -> Reducer<AppState, AppAction, AppEnvironment> {
-    return { state, action, environment in
+	return .init { state, action, environment in
         if case let .counter(.counter(counterAction)) = action {
             switch counterAction {
             case .incrTapped:

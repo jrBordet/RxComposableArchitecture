@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let counterStore = Scene<ViewController>()
             .render()
             .apply {
-                $0.store = applicationStore.view(
+                $0.store = applicationStore.scope(
                     value: { $0.counter },
                     action: { AppAction.counter($0) }
                 )
@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let loginScene = UIViewController
             .login
             .apply {
-                $0.store = applicationStore.view(
+                $0.store = applicationStore.scope(
                     value: { $0.login },
                     action: { .login($0) }
                 )

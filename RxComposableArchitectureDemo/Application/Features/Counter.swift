@@ -38,9 +38,8 @@ public typealias CounterViewEnvironment = (
     other: () -> Effect<Bool>
 )
 
-public let counterViewReducer: Reducer<CounterViewState, CounterViewAction, CounterViewEnvironment> = combine(
-    pullback(
-        counterReducer,
+public let counterViewReducer: Reducer<CounterViewState, CounterViewAction, CounterViewEnvironment> = Reducer.combine(
+		counterReducer.pullback(
         value: \CounterViewState.counter,
         action: /CounterViewAction.counter,
         environment: { $0.counter }
@@ -49,11 +48,7 @@ public let counterViewReducer: Reducer<CounterViewState, CounterViewAction, Coun
 
 // MARK: - Counter Reducer
 
-public func counterReducer(
-    state: inout CounterState,
-    action: CounterAction,
-    environment: CounterEnvironment
-) -> [Effect<CounterAction>] {
+public let counterReducer: Reducer<CounterState, CounterAction, CounterEnvironment> = .init { state, action, environment in
     switch action {
     case .incrTapped:
         state.count += 1

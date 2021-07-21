@@ -50,13 +50,13 @@ class ViewController: UIViewController, StoreViewController {
         incr.rx.tap.bind { _ in store.send(.counter(.incrTapped)) }.disposed(by: disposeBag)
         
         store
-            .value
+            .state
             .map { String($0.count) }
             .bind(to: counter.rx.text)
             .disposed(by: disposeBag)
         
         store
-            .value
+            .state
             .map { $0.isLoading }
             .asDriver(onErrorJustReturn: false)
             .drive(SwiftSpinner.shared.rx_visible)

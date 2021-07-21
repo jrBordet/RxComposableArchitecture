@@ -115,7 +115,8 @@ public class LoginViewController: UIViewController, StoreViewController {
         store.send(LoginViewAction.login(LoginAction.checkRememberMeStatus))
         
         store
-            .value
+            .state
+			.distinctUntilChanged()
             .map { $0.rememberMeStatus }
             .distinctUntilChanged()
             .bind(to: rememberMeSwitch.rx.isOn)
@@ -127,7 +128,8 @@ public class LoginViewController: UIViewController, StoreViewController {
             .disposed(by: disposeBag)
         
         store
-            .value
+            .state
+			.distinctUntilChanged()
             .map { $0.isEnabled }
             .distinctUntilChanged()
             .bind(to: rememberMeSwitch.rx.isEnabled)
@@ -136,20 +138,23 @@ public class LoginViewController: UIViewController, StoreViewController {
         // MARK: - Username
         
         store
-            .value
+            .state
+			.distinctUntilChanged()
             .map { $0.username }
             .bind(to: usernameField.rx.text)
             .disposed(by: disposeBag)
         
         usernameField.rx
             .text
+			.distinctUntilChanged()
             .bind(to: store.rx.username)
             .disposed(by: disposeBag)
-        
+		        
         // MARK: - Password
 
         store
-            .value
+            .state
+			.distinctUntilChanged()
             .map { $0.password }
             .bind(to: passwordField.rx.text)
             .disposed(by: disposeBag)
@@ -167,7 +172,8 @@ public class LoginViewController: UIViewController, StoreViewController {
             .disposed(by: disposeBag)
         
         store
-            .value
+            .state
+			.distinctUntilChanged()
             .map { $0.isEnabled }
             .bind(to: loginButton.rx.isEnabled)
             .disposed(by: disposeBag)

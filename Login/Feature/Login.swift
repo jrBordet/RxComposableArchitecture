@@ -8,96 +8,92 @@
 import Foundation
 import RxComposableArchitecture
 
-public func loginReducer(
-    state: inout LoginState,
-    action: LoginAction,
-    environment: LoginEnvironment
-) -> [Effect<LoginAction>] {
-    switch action {
-    case let .username(value):
-        state.username = value
-        
-        state.isEnabled = isValidUsername(state.username) && state.password.isEmpty == false
+public let loginReducer: Reducer<LoginState, LoginAction, LoginEnvironment> = .init { state, action, environment in
+	switch action {
+	case let .username(value):
+		state.username = value
+		
+		state.isEnabled = isValidUsername(state.username) && state.password.isEmpty == false
 
-        if state.rememberMeStatus && value.count == 3 {
-            return [
-                environment.retrieveCredentials(value).map(LoginAction.retrieveCredentialsResponse)
-            ]
-        }
-        
-        return []
-    case let .password(value):
-        state.password = value
-        
-        state.isEnabled = isValidUsername(state.username) && state.password.isEmpty == false
-        
-        return []
-    case .login:
-        state.isLoading = true
-        
-        if state.rememberMeStatus == false {
-            return [
-                environment.login(state.username, state.password).map(LoginAction.loginResponse),
-                environment.ereaseCredentials(state.username).map { _ in .none }
-            ]
-        }
-        
-        return [
-            environment.login(state.username, state.password).map(LoginAction.loginResponse)
-        ]
-    case let .loginResponse(result):
-        state.isLoading = false
+		if state.rememberMeStatus && value.count == 3 {
+			return [
+				environment.retrieveCredentials(value).map(LoginAction.retrieveCredentialsResponse)
+			]
+		}
+		
+		return []
+	case let .password(value):
+		state.password = value
+		
+		state.isEnabled = isValidUsername(state.username) && state.password.isEmpty == false
+		
+		return []
+	case .login:
+		state.isLoading = true
+		
+		if state.rememberMeStatus == false {
+			return [
+				environment.login(state.username, state.password).map(LoginAction.loginResponse),
+				environment.ereaseCredentials(state.username).map { _ in .none }
+			]
+		}
+		
+		return [
+			environment.login(state.username, state.password).map(LoginAction.loginResponse)
+		]
+	case let .loginResponse(result):
+		state.isLoading = false
 
-        if case let .success(message) = result {
-            state.alert = LoginAlert(message: message)
-        }
-        
-        if case let .failure(error) = result {
-            guard case let .invalidCredentials(m) = error else {
-                return []
-            }
-            
-            state.alert = LoginAlert(message: m)
-        }
-        
-        return []
-    case let .rememberMe(value):
-        guard state.isEnabled else {
-            return []
-        }
-        
-        state.rememberMeStatus = value
-        
-        return [
-            environment.saveCredentials(state.username, state.password).map(LoginAction.rememberMeResponse)
-        ]
-    case .rememberMeResponse:
-        return []
-    case .dismissAlert:
-        state.alert = nil
-        return []
-    case .retrieveCredentials:
-        return [
-            environment.retrieveCredentials(state.username).map(LoginAction.retrieveCredentialsResponse)
-        ]
-    case let .retrieveCredentialsResponse(username, password):
-        state.username = username
-        state.password = password
-        
-        state.isEnabled = isValidUsername(state.username) && state.password.isEmpty == false
+		if case let .success(message) = result {
+			state.alert = LoginAlert(message: message)
+		}
+		
+		if case let .failure(error) = result {
+			guard case let .invalidCredentials(m) = error else {
+				return []
+			}
+			
+			state.alert = LoginAlert(message: m)
+		}
+		
+		return []
+	case let .rememberMe(value):
+		guard state.isEnabled else {
+			return []
+		}
+		
+		state.rememberMeStatus = value
+		
+		return [
+			environment.saveCredentials(state.username, state.password).map(LoginAction.rememberMeResponse)
+		]
+	case .rememberMeResponse:
+		return []
+	case .dismissAlert:
+		state.alert = nil
+		return []
+	case .retrieveCredentials:
+		return [
+			environment.retrieveCredentials(state.username).map(LoginAction.retrieveCredentialsResponse)
+		]
+	case let .retrieveCredentialsResponse(username, password):
+		state.username = username
+		state.password = password
+		
+		state.isEnabled = isValidUsername(state.username) && state.password.isEmpty == false
 
-        return []
-    case .checkRememberMeStatus:
-        return [
-            environment.retrieveCredentials(state.username).map(LoginAction.checkRememberMeStatusResponse)
-        ]
-    case let .checkRememberMeStatusResponse(username, password):
-        state.rememberMeStatus = username.isEmpty == false && password.isEmpty == false
-        
-        return []
-    case .none:
-        return []
-    }
+		return []
+	case .checkRememberMeStatus:
+		return [
+			environment.retrieveCredentials(state.username).map(LoginAction.checkRememberMeStatusResponse)
+		]
+	case let .checkRememberMeStatusResponse(username, password):
+		state.rememberMeStatus = username.isEmpty == false && password.isEmpty == false
+		
+		return []
+	case .none:
+		return []
+	}
 }
 
 func isValidUsername(_ email: String) -> Bool {
