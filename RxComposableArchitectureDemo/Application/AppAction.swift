@@ -8,6 +8,7 @@
 import Foundation
 import Login
 
-public enum AppAction {
-    case login(LoginViewAction)
+public enum AppAction: Equatable {
+    case counter(CounterAction)
+	case favorites(FavoritesAction)
 }

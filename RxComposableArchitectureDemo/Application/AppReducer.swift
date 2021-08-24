@@ -10,14 +10,14 @@ import RxComposableArchitecture
 import Login
 
 let appReducer: Reducer<AppState, AppAction, AppEnvironment> = Reducer.combine(
-//	counterViewReducer.pullback(
-//		value: \AppState.counter,
-//		action: /AppAction.counter,
-//		environment: { $0.counter }
-//	),
-	loginViewReducer.pullback(
-		value: \AppState.login,
-		action: /AppAction.login,
-		environment: { $0 }
+	counterReducer.pullback(
+		value: \AppState.counterView,
+		action: /AppAction.counter,
+		environment: { $0.counter }
+	),
+	favoritesReducer.pullback(
+		value: \AppState.favoritesView,
+		action: /AppAction.favorites,
+		environment: { $0.counter }
 	)
 )

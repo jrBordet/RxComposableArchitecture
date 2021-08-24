@@ -23,51 +23,6 @@ class CounterTests: XCTestCase {
 		}
 	}
 	
-	override func setUpWithError() throws {
-		// Put setup code here. This method is called before the invocation of each test method in the class.
-	}
-	
-	override func tearDownWithError() throws {
-		// Put teardown code here. This method is called after the invocation of each test method in the class.
-	}
-	
-	func testCounterView() {
-		let initialValue = CounterViewState(
-			counter: CounterState(
-				count: 1,
-				isLoading: false,
-				isPrime: false,
-				favorites: []
-			),
-			favorites: FavoritesState(
-				selected: nil,
-				favorites: [],
-				isPrime: false
-			)
-		)
-		
-		let env = CounterViewEnvironment { _ -> Effect<Bool> in
-			Effect.sync {
-				true
-			}
-		}
-		
-		//		assert(
-		//			initialValue: initialValue,
-		//			reducer: counterViewReducer,
-		//			environment: env,
-		//			steps: Step(.send, CounterViewAction.counter(CounterAction.incrTapped), { state in
-		//				state.counter.count = 2
-		//			}),
-		//			Step(.send, CounterViewAction.counter(CounterAction.addFavorite), { state in
-		//				state.counter.count = 2
-		//				state.counter.favorites = [2]
-		//				state.favorites.favorites = [2]
-		//			})
-		//
-		//		)
-	}
-	
 	func testCounterIncr() {
 		assert(
 			initialValue: initialValue,
@@ -129,6 +84,31 @@ class CounterTests: XCTestCase {
 			}),
 			Step(.send, .addFavorite, { state in
 				state.favorites = [2]
+			})
+		)
+	}
+	
+	func testCounterRemoveFavorite() {
+		
+		let initialValue = CounterState(
+			count: 0,
+			isLoading: false,
+			isPrime: false,
+			favorites: [2, 3, 5, 7]
+		)
+		
+		assert(
+			initialValue: initialValue,
+			reducer: counterReducer,
+			environment: env,
+			steps: Step(.send, .incrTapped, { state in
+				state.count = 1
+			}),
+			Step(.send, .incrTapped, { state in
+				state.count = 2
+			}),
+			Step(.send, CounterAction.removeFavorite, { state in
+				state.favorites = [3, 5, 7]
 			})
 		)
 	}

@@ -158,7 +158,7 @@ public func assert<Value: Equatable, Action: Equatable, Environment>(
             
             effect
                 .subscribe(
-                    onNext: { action = $0},
+                    onNext: { action = $0 },
                     onCompleted: { receivedCompletion.fulfill() })
                 .disposed(by: disposeBag)
             

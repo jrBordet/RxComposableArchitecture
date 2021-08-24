@@ -11,95 +11,86 @@ import RxComposableArchitecture
 import os.log
 import Login
 
-public struct AppState {
-	var loginState: LoginViewState
-}
-
-public struct FeatureCounterState {
-	public var count: Int
-	public var isLoading: Bool
-	//    public var alertNthPrime: PrimeAlert?
+public struct AppState: Equatable {
+	var counter: CounterState
+	var favorites: FavoritesState
 }
 
 extension AppState {
-	//    var counter: CounterViewState {
-	//        get {
-	//            CounterViewState(
-	//                count: self.featureCounterState.count,
-	//                isLoading: self.featureCounterState.isLoading,
-	//                alertNthPrime: self.featureCounterState.alertNthPrime
-	//            )
-	//        }
-	//        set {
-	//            self.featureCounterState.count = newValue.count
-	//            self.featureCounterState.isLoading = newValue.isLoading
-	//            self.featureCounterState.alertNthPrime = newValue.alertNthPrime
-	//        }
-	//    }
-	
-	var login: LoginViewState {
+	var counterView: CounterState {
 		get {
-			LoginViewState(
-				username: self.loginState.username,
-				password: self.loginState.password,
-				isLoading: self.loginState.isLoading,
-				isEnabled: self.loginState.isEnabled,
-				alert: self.loginState.alert,
-				rememberMeStatus: self.loginState.rememberMeStatus
-			)
+			self.counter
 		}
 		
 		set {
-			self.loginState = newValue
+			self.counter = newValue
+			
+			self.favorites = FavoritesState(
+				selected: self.favorites.selected,
+				favorites: newValue.favorites,
+				isPrime: self.favorites.isPrime
+			)
+		}
+	}
+	
+	var favoritesView: FavoritesState {
+		get {
+			self.favorites
+		}
+		
+		set {
+			self.favorites = newValue
+			
+			self.counter = CounterState(
+				count: self.counter.count,
+				isLoading: self.counter.isLoading,
+				isPrime: self.counter.isPrime,
+				favorites: newValue.favorites
+			)
 		}
 	}
 }
 
 let initialAppState = AppState(
-	loginState: LoginViewState(
-		username: "",
-		password: "",
-		isLoading: false,
-		isEnabled: false,
-		alert: nil,
-		rememberMeStatus: false
-	)
+	counter: .empty,
+	favorites: .empty
 )
 
 func activityFeed(
 	_ reducer: Reducer<AppState, AppAction, AppEnvironment>
 ) -> Reducer<AppState, AppAction, AppEnvironment> {
 	return .init { state, action, environment in
-		if case let .login(.login(loginAction)) = action {
-			os_log("login %{public}@ ", log: OSLog.login, type: .info, [action, state])
-			
-			switch loginAction {
-			case .username(_):
-				break
-			case .password(_):
-				break
-			case .login:
-				break
-			case .loginResponse(_):
-				break
-			case .checkRememberMeStatus:
-				break
-			case .checkRememberMeStatusResponse(_, _):
-				break
-			case .rememberMe:
-				break
-			case .rememberMeResponse(_):
-				break
-			case .dismissAlert:
-				break
-			case .retrieveCredentials:
-				break
-			case .retrieveCredentialsResponse(_, _):
-				break
-			case .none:
-				break
-			}
-		}
+		dump(state)
+//		if case let .login(.login(loginAction)) = action {
+//			os_log("login %{public}@ ", log: OSLog.login, type: .info, [action, state])
+//			
+//			switch loginAction {
+//			case .username(_):
+//				break
+//			case .password(_):
+//				break
+//			case .login:
+//				break
+//			case .loginResponse(_):
+//				break
+//			case .checkRememberMeStatus:
+//				break
+//			case .checkRememberMeStatusResponse(_, _):
+//				break
+//			case .rememberMe:
+//				break
+//			case .rememberMeResponse(_):
+//				break
+//			case .dismissAlert:
+//				break
+//			case .retrieveCredentials:
+//				break
+//			case .retrieveCredentialsResponse(_, _):
+//				break
+//			case .none:
+//				break
+//			}
+//		}
 		
 		return reducer(&state, action, environment)
 	}

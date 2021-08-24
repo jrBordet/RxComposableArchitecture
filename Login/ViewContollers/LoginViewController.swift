@@ -10,7 +10,6 @@ import RxSwift
 import RxCocoa
 import RxComposableArchitecture
 
-extension Store: ReactiveCompatible {}
 
 public extension Reactive where Base: Store<LoginViewState, LoginViewAction> {
     

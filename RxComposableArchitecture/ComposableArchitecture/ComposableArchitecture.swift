@@ -10,6 +10,8 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+extension Store: ReactiveCompatible {}
+
 public protocol StoreViewController {
 	associatedtype Value
 	associatedtype Action
@@ -213,31 +215,16 @@ public final class Store<State, Action> {
 		self.state.accept(valueCopy)
 		
 		effects.forEach {
-			$0.bind(to: send)
-				.disposed(by: disposeBag)
+			$0.bind(to: send).disposed(by: disposeBag)
 		}
-		
-//		effects.forEach { effect in
-//			effect
-//				.bind(to: sendAction)
-//				.disposed(by: disposeBag)
-//
-////			effect.subscribe(onNext: {  [weak self] action in
-////				self?.send(action)
-////			}) { error in
-////
-////			} onCompleted: {
-////
-////			}
-////			.disposed(by: disposeBag)
-//		}
 	}
 	
 	public func scope<LocalState, LocalAction>(
 		value toLocalValue: @escaping (State) -> LocalState,
 		action toGlobalAction: @escaping (LocalAction) -> Action
 	) -> Store<LocalState, LocalAction> {
-		var isSending = false
+//		var isSending = false
+		// TODO: check this [](https://www.pointfree.co/episodes/ep151-composable-architecture-performance-view-stores-and-scoping#t824)
 		
 		let localStore = Store<LocalState, LocalAction>(
 			initialValue: toLocalValue(self.state.value),
@@ -247,8 +234,8 @@ public final class Store<State, Action> {
 						return []
 					}
 					
-					isSending = true
-					defer { isSending = false }
+//					isSending = true
+//					defer { isSending = false }
 					
 					self.send(toGlobalAction(localAction))
 					
@@ -261,8 +248,8 @@ public final class Store<State, Action> {
 		
 		state
 			.map { toLocalValue($0) }
-			.filter { _ in isSending }
-			.skip(1) // TODO: check this [](https://www.pointfree.co/episodes/ep151-composable-architecture-performance-view-stores-and-scoping#t824)
+			//.filter { _ in isSending }
+			//.skip(1)
 			.bind(to: localStore.state)
 			.disposed(by: localStore.disposeBag)
 		
@@ -275,10 +262,6 @@ extension Reducer {
 		_ reducers: Reducer...
 	) -> Reducer {
 		return Reducer { value, action, environment in
-			//		let effects = reducers.flatMap {
-			//			$0.reducer(&value, action, environment)
-			//		}
-			
 			let effects = reducers.flatMap { $0(&value, action, environment) }
 			
 			return effects
