@@ -10,14 +10,14 @@ import Login
 import RxComposableArchitecture
 
 public typealias AppEnvironment = (
-    counter: CounterViewEnvironment,
-    login: LoginViewEnvironment
+//    counter: CounterViewEnvironment,
+    LoginViewEnvironment
 )
 
-let counterEnv: CounterViewEnvironment = (
-    counter: { _ in .sync { 5 } },
-    other: { .sync { true } }
-)
+//let counterEnv: CounterViewEnvironment = (
+//    counter: { _ in .sync { 5 } },
+//    other: { .sync { true } }
+//)
 
 
 
@@ -56,6 +56,5 @@ let loginEnv: LoginViewEnvironment = (
 )
 
 let live: AppEnvironment = (
-    counter: counterEnv,
-    login: loginEnv
+    loginEnv
 )

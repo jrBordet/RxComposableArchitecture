@@ -83,6 +83,74 @@ extension Reducer {
 	}
 }
 
+extension Reducer where State == Bool {
+	public var filter: Reducer<State, Action, Environment> {
+		.init { (state, action, environment) -> [Effect<Action>] in
+			guard state else {
+				return []
+			}
+			
+			return self(&state, action, environment)
+		}
+	}
+}
+
+//extension Reducer {
+//	// A ((inout State, Action, Environment) -> [Effect<Action>])
+//	// M<A> map<B>(_ f: (A) -> B) -> M<B>
+//
+//	public func map<B>(_ f: @escaping(State) -> B) -> Reducer<B, Action, Environment> {
+//		.init { (state, action, environment) -> [Effect<Action>] in
+//			let b = f(state)
+//
+//			return self(b, action, environment)
+//		}
+//	}
+//
+//}
+
+
+extension Reducer where State == ((Int) -> Bool) {
+	public func filtering() -> Reducer<State, Action, Environment> {
+		.init { (state, action, environment) -> [Effect<Action>] in
+			guard state(0) else {
+				return [.empty()]
+			}
+			
+			return self(&state, action, environment)
+		}
+	}
+}
+
+/**
+
+func map<A, B>(_ f: @escaping(A) -> B) -> Reducer<B>{
+
+}
+
+func mapping <A, B, C> (f: @escaping (A) -> (B)) -> (@escaping ((C, B) -> (C))) -> (C, A) -> (C) {
+  return { reducer in
+	  return { accum, input in
+		  reducer(accum, f(input))
+	  }
+  }
+}
+
+
+func filtering<A, C> (f: @escaping (A) -> (Bool)) -> (@escaping ((C, A) -> (C))) -> (C, A) -> (C) {
+  return { reducer in
+	  return { accum, input in
+		  if f(input) {
+			  return reducer(accum, input)
+		  } else {
+			  return accum
+		  }
+	  }
+  }
+}
+
+*/
+
 //extension Reducer {
 //	func optional() -> Reducer<State?, Action, Environment> {
 //		.init { state, action, environment in
@@ -173,20 +241,22 @@ public final class Store<State, Action> {
 		
 		let localStore = Store<LocalState, LocalAction>(
 			initialValue: toLocalValue(self.state.value),
-			reducer: .init { [weak self] localValue, localAction, _ in
-				guard let self = self else {
+			reducer:
+				.init { [weak self] localValue, localAction, _ in
+					guard let self = self else {
+						return []
+					}
+					
+					isSending = true
+					defer { isSending = false }
+					
+					self.send(toGlobalAction(localAction))
+					
+					localValue = toLocalValue(self.state.value)
+					
 					return []
-				}
-				
-				isSending = true
-				 defer { isSending = false }
-				
-				self.send(toGlobalAction(localAction))
-				
-				localValue = toLocalValue(self.state.value)
-				
-				return []
-			}, environment: self.environment
+				},
+			environment: self.environment
 		)
 		
 		state
@@ -223,7 +293,7 @@ extension Reducer {
 		environment: @escaping (GlobalEnvironment) -> Environment
 	) -> Reducer<GlobalValue, GlobalAction, GlobalEnvironment> {
 		return .init { globalValue, globalAction, globalEnvironment in
-			guard let localAction = action.extract(globalAction) else {
+			guard let localAction = action.extract(from: globalAction) else {
 				return []
 			}
 			
@@ -264,6 +334,158 @@ extension Reducer {
 		#else
 		return self
 		#endif
+	}
+}
+
+// abstract def coflatMap[A, B](fa: F[A])(f: (F[A]) ⇒ B): F[B]
+// coflatMap is the dual of flatMap on FlatMap.
+
+/**
+
+coflatMap is the dual of flatMap on FlatMap.
+It applies a value in a context to a function that takes a value in a context and returns a normal value.
+
+Example:
+
+scala> import cats.implicits._
+scala> import cats.CoflatMap
+scala> val fa = Some(3)
+scala> def f(a: Option[Int]): Int = a match {
+	 | case Some(x) => 2 * x
+	 | case None => 0 }
+scala> CoflatMap[Option].coflatMap(fa)(f)
+res0: Option[Int] = Some(6)
+
+*/
+
+/**
+
+FlatMap type class gives us flatMap, which allows us to have a value in a context (F[A]) and then feed that into a function that takes a normal value and returns a value in a context (A => F[B]).
+
+One motivation for separating this out from Monad is that there are situations where we can implement flatMap but not pure. For example, we can implement map or flatMap that transforms the values of Map[K, *], but we can't implement pure (because we wouldn't know what key to use when instantiating the new Map).
+
+
+protocol Comonad: Functor {
+  static func extract<A>(_ fa: Kind<Self, A>) -> A
+  static func coflatMap<A, B>(_ fa: Kind<Self, A>, _ f: @escaping (Kind<Self, A>) -> B) -> Kind<Self, B>
+}s
+
+
+func coflatMap<A, B>(_ f: (A?) -> B) -> B? {
+
+}
+
+func flatMap<A, B>(_ f: (A) -> B?) -> B? {
+
+}
+
+func flatMap<U>(_ transform: (A) -> U?) -> U? {
+  switch self {
+  case let .some(wrapped):
+	return transform(wrapped)
+  case .none:
+	return Optional<U>.none
+  }
+}
+
+*/
+
+
+/**
+
+setGet: if I set a B into a data structure A and then I get it back, the retrieved B must be equal to the initial one;
+
+*/
+
+
+extension Reducer {
+	public func pullback<GlobalState, GlobalAction, GlobalEnvironment>(
+		state: Lens<GlobalState, State>,
+		action: CasePath<GlobalAction, Action>,
+		environment: @escaping (GlobalEnvironment) -> Environment
+	) -> Reducer<GlobalState, GlobalAction, GlobalEnvironment> {
+		return .init { globalState, globalAction, globalEnvironment in
+			guard let localAction = action.extract(from: globalAction) else {
+				return []
+			}
+			
+			//self(&<#State#>, <#Action#>, <#Environment#>)
+			
+			//self.reducer(&<#State#>, <#Action#>, <#Environment#>)
+			
+			/**
+			
+			return  { globalValue, action in
+			  var localValue = f(globalValue)
+			  reducer(&localValue, action)
+			}
+			
+			*/
+			
+			var localState = state.get(globalState)
+			let localEffects = self(&localState, localAction, environment(globalEnvironment))
+			
+			/**
+			
+			The piece we are missing is the ability to take that new local value and stick it back into the global value.
+			That sounds like that in addition to our function which can get local values from global values,
+			we need a function that can set local values inside global values.
+			
+			func pullback<LocalValue, GlobalValue, Action>(
+			  _ reducer: @escaping (inout LocalValue, Action) -> Void,
+			  get: @escaping (GlobalValue) -> LocalValue,
+			  set: @escaping (inout GlobalValue, LocalValue) -> Void
+			) -> (inout GlobalValue, Action) -> Void {
+
+			  return  { globalValue, action in
+				var localValue = get(globalValue)
+				reducer(&localValue, action)
+			
+				set(&globalValue, localValue)
+			  }
+			}
+			
+			*/
+			
+//			var newGlobalValue = value.set(localState, globalValue)
+		
+			globalState = state.set(localState, globalState)
+			/**
+			
+			func pullback<LocalValue, GlobalValue, Action>(
+			  _ reducer: @escaping (inout LocalValue, Action) -> Void,
+			  _ f: @escaping (GlobalValue) -> LocalValue
+			) -> (inout GlobalValue, Action) -> Void {
+
+			}
+			
+			*/
+				
+//			var localValue = value.get(globalValue) // State
+//			let localEffects = reducer(&localValue, localAction, environment(globalEnvironment))
+			
+			// TODO: update the global value
+//			let gv = value.set(localValue, globalValue)
+			//  globalValue[keyPath: value] = localValue
+
+			
+			
+			//        //  var localValue = globalValue[keyPath: value]
+			//        //  reducer(&localValue, action)
+			//        //  globalValue[keyPath: value] = localValue
+			
+			//self(&<#State#>, <#Action#>, <#Environment#>)
+			
+			/// That one line is simultaneously getting the local value, mutating it,
+			/// and plugging it back into the global value.
+//			let localEffects = self(
+//				&globalValue[keyPath: value],
+//				localAction,
+//				environment(globalEnvironment)
+//			)
+			
+			return localEffects.map { $0.map(action.embed) }
+		}
 	}
 }
 
@@ -311,7 +533,7 @@ public func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction, LocalEn
 	environment: @escaping (GlobalEnvironment) -> LocalEnvironment
 ) -> Reducer<GlobalValue, GlobalAction, GlobalEnvironment> {
 	return .init { globalValue, globalAction, globalEnvironment in
-		guard let localAction = action.extract(globalAction) else {
+		guard let localAction = action.extract(from: globalAction) else {
 			return []
 		}
 		

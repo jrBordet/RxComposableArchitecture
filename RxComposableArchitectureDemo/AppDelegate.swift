@@ -30,14 +30,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        counterScene.store = counterStore
         
         
-        let counterStore = Scene<ViewController>()
-            .render()
-            .apply {
-                $0.store = applicationStore.scope(
-                    value: { $0.counter },
-                    action: { AppAction.counter($0) }
-                )
-            }
+//        let counterStore = Scene<ViewController>()
+//            .render()
+//            .apply {
+//                $0.store = applicationStore.scope(
+//                    value: { $0.counter },
+//                    action: { AppAction.counter($0) }
+//                )
+//            }
         
         
         // MARK: - Login

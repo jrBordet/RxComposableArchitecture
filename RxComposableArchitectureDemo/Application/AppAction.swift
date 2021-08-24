@@ -9,6 +9,5 @@ import Foundation
 import Login
 
 public enum AppAction {
-    case counter(CounterViewAction)
     case login(LoginViewAction)
 }
