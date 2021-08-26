@@ -11,7 +11,7 @@ import RxComposableArchitecture
 public struct CounterViewState: Equatable {
 	var currentCount: Int
 	var isLoading: Bool
-	var isPrime: Bool
+	var isPrime: Bool?
 
 	var favorites: [Int]
 	var selectedFavorite: Int?

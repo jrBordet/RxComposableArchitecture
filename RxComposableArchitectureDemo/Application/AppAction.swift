@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Login
 
 public enum AppAction: Equatable {
     case counter(CounterAction)

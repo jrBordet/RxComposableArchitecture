@@ -9,7 +9,6 @@
 import Foundation
 import RxComposableArchitecture
 import os.log
-import Login
 
 public struct AppState: Equatable {
 	var counter: CounterState
@@ -60,37 +59,10 @@ func activityFeed(
 	_ reducer: Reducer<AppState, AppAction, AppEnvironment>
 ) -> Reducer<AppState, AppAction, AppEnvironment> {
 	return .init { state, action, environment in
-		dump(state)
-//		if case let .login(.login(loginAction)) = action {
-//			os_log("login %{public}@ ", log: OSLog.login, type: .info, [action, state])
-//			
-//			switch loginAction {
-//			case .username(_):
-//				break
-//			case .password(_):
-//				break
-//			case .login:
-//				break
-//			case .loginResponse(_):
-//				break
-//			case .checkRememberMeStatus:
-//				break
-//			case .checkRememberMeStatusResponse(_, _):
-//				break
-//			case .rememberMe:
-//				break
-//			case .rememberMeResponse(_):
-//				break
-//			case .dismissAlert:
-//				break
-//			case .retrieveCredentials:
-//				break
-//			case .retrieveCredentialsResponse(_, _):
-//				break
-//			case .none:
-//				break
-//			}
-//		}
+		
+		if case AppAction.counter(CounterAction.incrTapped) = action {
+			os_log("counter %{public}@ ", log: OSLog.counter, type: .info, [action, state])
+		}
 		
 		return reducer(&state, action, environment)
 	}
@@ -100,5 +72,4 @@ extension OSLog {
 	private static var subsystem = Bundle.main.bundleIdentifier!
 	
 	static let counter = OSLog(subsystem: subsystem, category: "Counter")
-	static let login = OSLog(subsystem: subsystem, category: "Login")
 }

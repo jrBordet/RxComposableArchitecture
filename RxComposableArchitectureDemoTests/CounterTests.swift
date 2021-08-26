@@ -67,6 +67,7 @@ class CounterTests: XCTestCase {
 			}),
 			Step(.receive, CounterAction.isPrimeResponse(true), { state in
 				state.isPrime = true
+				state.isLoading = false
 			})
 		)
 	}

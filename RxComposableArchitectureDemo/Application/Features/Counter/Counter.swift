@@ -44,6 +44,9 @@ public let counterReducer = Reducer<CounterState, CounterAction, CounterEnvironm
 		
 		state.favorites = copy
 		return []
+	case .resetPrime:
+		state.isPrime = nil
+		return []
 	}
 }
 
@@ -61,7 +64,7 @@ public struct CounterState {
 	var count: Int
 	var isLoading: Bool
 	
-	var isPrime: Bool
+	var isPrime: Bool?
 	
 	var favorites: [Int]
 }
@@ -72,7 +75,7 @@ extension CounterState {
 	public static let empty = Self(
 		count: 0,
 		isLoading: false,
-		isPrime: false,
+		isPrime: nil,
 		favorites: []
 	)
 }
@@ -83,7 +86,7 @@ extension CounterState {
 		static let sample = CounterState(
 			count: 1,
 			isLoading: false,
-			isPrime: false,
+			isPrime: nil,
 			favorites: []
 		)
 	}
@@ -102,30 +105,13 @@ public enum CounterAction: Equatable {
 	
 	case addFavorite
 	case removeFavorite
+	
+	case resetPrime
 }
 
 // MARK: - Counter Environment
 
 public typealias CounterEnvironment = (Int) -> Effect<Bool>
-
-// MARK: - Common
-
-public struct PrimeAlert: Equatable, Identifiable {
-	let prime: Int
-	public var id: Int { self.prime }
-}
-
-
-public func isPrime (_ p: Int) -> Bool {
-	if p <= 1 { return false }
-	if p <= 3 { return true }
-	
-	for i in 2...Int(sqrtf(Float(p))) {
-		if p % i == 0 { return false }
-	}
-	
-	return true
-}
 
 let mock_counter_environment: CounterEnvironment = { v in
 	Effect.sync {

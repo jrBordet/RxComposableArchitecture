@@ -53,5 +53,4 @@ public extension Reactive where Base: Store<CounterState, CounterAction> {
 			}
 		}
 	}
-	
 }

@@ -11,14 +11,14 @@ import RxComposableArchitecture
 public struct FavoritesState: Equatable {
 	var selected: Int?
 	var favorites: [Int]
-	var isPrime: Bool
+	var isPrime: Bool?
 }
 
 extension FavoritesState {
 	static let empty = Self(
 		selected: nil,
 		favorites: [],
-		isPrime: false
+		isPrime: nil
 	)
 }
 

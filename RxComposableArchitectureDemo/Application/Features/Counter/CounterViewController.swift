@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxComposableArchitecture
+import SwiftSpinner
 
 class CounterViewController: UIViewController, StoreViewController {
 	var store: Store<CounterState, CounterAction>?
@@ -54,11 +55,19 @@ class CounterViewController: UIViewController, StoreViewController {
 			.disposed(by: disposeBag)
 		
 		store.state
-			.map { $0.isPrime }
-			.distinctUntilChanged()
-			.map { $0 ? UIColor.green : UIColor.red }
-			.bind(to: counterLabel.rx.textColor)
+			.map { $0.isLoading }
+			.bind(to: SwiftSpinner.shared.rx_visible)
 			.disposed(by: disposeBag)
+				
+		store.state
+			.map { $0.isPrime }
+			.ignoreNil()
+			.map { $0 ? "yes" : "false" }
+			.messageAlertController {
+				store.send(CounterAction.resetPrime)
+			}
+            .bind(to: self.rx.presentAlert)
+            .disposed(by: disposeBag)
 		
 		addButton.rx
 			.tap

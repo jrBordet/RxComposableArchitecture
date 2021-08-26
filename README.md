@@ -27,6 +27,10 @@ end
 pod install
 ```
 
+### Case Studies
+* [CoachTimer](https://github.com/jrBordet/CoachTimer)
+* [GithubStargazers](https://github.com/jrBordet/GithubStargazers)
+
 ## Frameworks
 
 

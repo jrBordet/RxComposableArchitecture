@@ -22,18 +22,6 @@ target 'RxComposableArchitectureDemo' do
 
 end
 
-target 'Login' do
-  # Comment the next line if you don't want to use dynamic frameworks
-  use_frameworks!
-
-  # Pods for RxComposableArchitecture
-   pod 'RxSwift', '6.2.0'
-   pod 'RxCocoa', '6.2.0'
-   pod 'SwiftSpinner', '~> 2.1.0'
-   pod 'Difference', '0.4'
-
-end
-
 target 'RxComposableArchitecture' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!

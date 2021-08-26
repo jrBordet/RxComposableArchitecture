@@ -8,7 +8,6 @@
 
 import SceneBuilder
 import RxComposableArchitecture
-import Login
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -29,6 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 				)
 			}
 		
+		let counterNav = UINavigationController.init(rootViewController: counter)
+		
 		// MARK: - Favorites
 		
 		let favorites = Scene<FavoritesViewController>()
@@ -46,11 +47,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let item1 = UITabBarItem(title: "Counter", image: UIImage(named: ""), tag: 0)
 		let item2 = UITabBarItem(title: "Favorites", image:  UIImage(named: ""), tag: 1)
 		
-		counter.tabBarItem = item1
+		counterNav.tabBarItem = item1
 		favorites.tabBarItem = item2
 		
 		tabBarController.setViewControllers([
-			counter,
+			counterNav,
 			favorites
 		], animated: false)
 		
@@ -62,8 +63,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		return true
 	}
-}
-
-extension UIViewController {
-	static var login: LoginViewController = Scene<LoginViewController>().render()
 }

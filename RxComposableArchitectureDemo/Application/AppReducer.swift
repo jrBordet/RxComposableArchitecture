@@ -7,7 +7,6 @@
 
 import Foundation
 import RxComposableArchitecture
-import Login
 
 let appReducer: Reducer<AppState, AppAction, AppEnvironment> = Reducer.combine(
 	counterReducer.pullback(

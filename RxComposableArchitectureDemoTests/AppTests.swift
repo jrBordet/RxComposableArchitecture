@@ -31,9 +31,9 @@ class AppTests: XCTestCase {
 			Step(.send, AppAction.counter(CounterAction.incrTapped), { state in
 				state.counter.count = 2
 			}),
-			Step(.send, .counter(CounterAction.addFavorite), { state in
+			Step(.send, .counter(CounterAction.addFavorite), { state in				
 				state.counter.favorites = [2]
-				state.favorites = FavoritesState(selected: nil, favorites: [2], isPrime: false)
+				state.favorites = FavoritesState(selected: nil, favorites: [2], isPrime: nil)
 			}),
 			Step(.send, .counter(CounterAction.isPrime), { state in
 				state.counter.isLoading = true
