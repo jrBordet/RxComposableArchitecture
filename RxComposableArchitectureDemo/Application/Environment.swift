@@ -6,56 +6,52 @@
 //
 
 import Foundation
-import Login
 import RxComposableArchitecture
+import RxSwift
+import RxCocoa
 
-public typealias AppEnvironment = (
-    counter: CounterViewEnvironment,
-    login: LoginViewEnvironment
-)
-
-let counterEnv: CounterViewEnvironment = (
-    counter: { _ in .sync { 5 } },
-    other: { .sync { true } }
-)
-
-
-
-let envLoginSuccess: Login =  {  _,_ in .sync { .success("login success") } }
-let envLoginFailureGeneric: Login =  {  _,_ in .sync { .failure(.generic) } }
-let envLoginFailureCredentials: Login =  {  _,_ in .sync { .failure(.invalidCredentials("invalid credentials")) } }
-let envLoginGenericError: Login =  {  _,_ in Effect.error(title: "custom error") }
-
-let envLoginSuccessDemo: (String, String) -> Effect<Result<String, LoginError>> =  { username, pasword in
-    guard username == "demo@gmail.com", pasword == "Aa123123" else {
-        return .sync { .failure(LoginError.invalidCredentials("invalid credentials message")) }
-    }
-    
-    return .sync { .success("login success") }
+struct AppEnvironment {
+	var counter: CounterEnvironment
 }
 
-var credentials: (String, String)? = nil
+extension AppEnvironment {
+	enum env {
+		static let live = AppEnvironment(
+			counter: (
+				isPrime: { v in Effect.sync { isPrime(v) } },
+				trivia: { triviaRequest($0) }
+			)
+		)
+		
+		static let mock = AppEnvironment(
+			counter: (
+				isPrime: { v in Effect.sync { isPrime(v) } },
+				trivia: { Observable<String>.just("\($0) awesome") }
+			)
+		)
+	}
+}
 
-let loginEnv: LoginViewEnvironment = (
-    login: envLoginGenericError,
-    saveCredentials: { username, passwd in
-        credentials = (username, passwd)
-        return  Effect.error(title: "error")//.sync { true }
-    },
-    retrieveCredentials: { usename in
-        guard let c = credentials else {
-            return .sync { ("", "") }
-        }
-        
-        return .sync { c }
-    },
-    ereaseCredentials: { _ in
-        credentials = nil
-        return .sync { true }
-    }
-)
+let live = AppEnvironment.env.live
 
-let live: AppEnvironment = (
-    counter: counterEnv,
-    login: loginEnv
-)
+func triviaRequest(_ v: Int) -> Observable<String>{
+	URLSession.shared.rx
+		.data(request: URLRequest(url: URL(string: "http://numbersapi.com/\(v)/trivia")!))
+		.debug("[TRIVIA-REQUEST]", trimOutput: false)
+		.map { d -> String? in
+			String(data: d, encoding: .utf8)
+		}
+		.map { $0 ?? "" }
+		.catchAndReturn("")
+}
+
+public func isPrime (_ p: Int) -> Bool {
+	if p <= 1 { return false }
+	if p <= 3 { return true }
+	
+	for i in 2...Int(sqrtf(Float(p))) {
+		if p % i == 0 { return false }
+	}
+	
+	return true
+}

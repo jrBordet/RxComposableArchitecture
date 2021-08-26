@@ -9,9 +9,9 @@ Pod::Spec.new do |spec|
   spec.source_files = 'RxComposableArchitectureTests/**/*.{swift}'
   spec.requires_arc = true
   spec.ios.deployment_target = '10.0'
-  spec.dependency 'RxSwift', '~> 5'
-  spec.dependency 'RxCocoa', '~> 5'
-  spec.dependency 'RxComposableArchitecture', '2.1.3'
+  spec.dependency 'RxSwift', '6.2.0'
+  spec.dependency 'RxCocoa', '6.2.0'
+  spec.dependency 'RxComposableArchitecture', '3.0.0'
   spec.dependency 'Difference', '0.4'
   spec.weak_framework = 'XCTest'
 end

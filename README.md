@@ -27,13 +27,17 @@ end
 pod install
 ```
 
+### Case Studies
+* [CoachTimer](https://github.com/jrBordet/CoachTimer)
+* [GithubStargazers](https://github.com/jrBordet/GithubStargazers)
+
 ## Frameworks
 
 
 | Pod               | Version         
 | -------------     |:-------------:| 
-| RxSwift           | 5.0.x         |
-| RxCocoa           | 5.0.x         |
+| RxSwift           | 6.2.x         |
+| RxCocoa           | 6.2.x         |
 
 
 ## Author
