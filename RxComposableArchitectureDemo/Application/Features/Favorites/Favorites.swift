@@ -12,13 +12,15 @@ public struct FavoritesState: Equatable {
 	var selected: Int?
 	var favorites: [Int]
 	var isPrime: Bool?
+	var trivia: String?
 }
 
 extension FavoritesState {
 	static let empty = Self(
 		selected: nil,
 		favorites: [],
-		isPrime: nil
+		isPrime: nil,
+		trivia: nil
 	)
 }
 
@@ -27,13 +29,32 @@ public enum FavoritesAction: Equatable {
 	case remove
 	
 	case isPrime, isPrimeResponse(Bool)
+	case trivia, triviaResponse(String)
 }
 
-public typealias FavoritesEnvironment = (Int) -> Effect<Bool>
+public typealias FavoritesEnvironment = (
+	isPrime: (Int) -> Effect<Bool>,
+	trivia: (Int) -> Effect<String>
+)
 
 public let favoritesReducer: Reducer<FavoritesState, FavoritesAction, FavoritesEnvironment> = .init { state, action, environment in
 	switch action {
 	case .remove:
+		return []
+	
+	case .trivia:
+		state.trivia = nil
+		
+		guard let selected = state.selected else {
+			return []
+		}
+		
+		return [
+			environment.trivia(selected).map(FavoritesAction.triviaResponse)
+		]
+		
+	case let .triviaResponse(v):
+		state.trivia = v
 		return []
 		
 	case .isPrime:
@@ -42,7 +63,7 @@ public let favoritesReducer: Reducer<FavoritesState, FavoritesAction, FavoritesE
 		}
 		
 		return [
-			environment(selected).map(FavoritesAction.isPrimeResponse)
+			environment.isPrime(selected).map(FavoritesAction.isPrimeResponse)
 		]
 		
 	case let .isPrimeResponse(v):
@@ -53,8 +74,8 @@ public let favoritesReducer: Reducer<FavoritesState, FavoritesAction, FavoritesE
 		guard state.favorites.isEmpty == false else {
 			return []
 		}
-				
-		guard (0..<state.favorites.count-1).contains(index) && index >= 0 else {
+		
+		guard index >= 0 && index <= state.favorites.count-1 else {
 			return []
 		}
 		

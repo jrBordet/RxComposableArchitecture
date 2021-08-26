@@ -47,6 +47,23 @@ class FavoritesViewController: UIViewController, StoreViewController {
 			}
 			.disposed(by: disposeBag)
 		
+		tableView.rx
+			.itemSelected
+			.do(afterNext: { _ in
+				store.send(.trivia)
+			})
+			.map { $0.row }
+			.bind(to: store.rx.select)
+			.disposed(by: disposeBag)
+		
+		store.state
+			.map { $0.trivia }
+			.distinctUntilChanged()
+			.ignoreNil()
+			.messageAlertController { }
+			.bind(to: self.rx.presentAlert)
+			.disposed(by: disposeBag)
+		
 	}
 }
 

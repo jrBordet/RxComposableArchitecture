@@ -62,7 +62,7 @@ class CounterViewController: UIViewController, StoreViewController {
 		store.state
 			.map { $0.isPrime }
 			.ignoreNil()
-			.map { $0 ? "yes" : "false" }
+			.map { $0 ? "yep" : "nope" }
 			.messageAlertController {
 				store.send(CounterAction.resetPrime)
 			}

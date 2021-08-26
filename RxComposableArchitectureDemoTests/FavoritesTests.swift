@@ -7,7 +7,6 @@
 
 import XCTest
 @testable import RxComposableArchitectureDemo
-import Login
 import Difference
 import RxComposableArchitecture
 import RxSwift
@@ -17,10 +16,34 @@ class FavoritesTests: XCTestCase {
 	
 	let initialValue = FavoritesState.empty
 	
-	let env: CounterEnvironment = { _ in
-		Effect.sync {
-			true
+	let env: CounterEnvironment = (
+		isPrime: { _ in
+			Effect.sync { true }
+		},
+		trivia: { (v: Int) in
+			Effect.sync { "\(v) is awesome" }
 		}
+	)
+	
+	func testFavoritesTrivia() {
+		let initialValue = FavoritesState(
+			selected: nil,
+			favorites: [2, 3],
+			isPrime: false
+		)
+		
+		assert(
+			initialValue: initialValue,
+			reducer: favoritesReducer,
+			environment: env,
+			steps: Step(.send, FavoritesAction.selectAt(0), { state in
+				state.selected = 2
+			}),
+			Step(.send, .trivia, { _ in  }),
+			Step(.receive, .triviaResponse("2 is awesome"), { state in
+				state.trivia = "2 is awesome"
+			})
+		)
 	}
 	
 	func testFavoritesSelecteAt0Empty() {
@@ -92,8 +115,6 @@ class FavoritesTests: XCTestCase {
 			
 		)
 	}
-	
-	
 	
 }
 

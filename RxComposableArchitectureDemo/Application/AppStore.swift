@@ -10,19 +10,12 @@ import RxComposableArchitecture
 
 var applicationStore: Store<AppState, AppAction> =
   Store(
-	initialValue: initialAppState,
-	reducer: appReducer,
-	environment: live
+    initialValue: initialAppState,
+    reducer: with(
+		appReducer,
+      compose(
+        logging,
+        activityFeed
+    )),
+    environment: live
 )
-
-//var applicationStore: Store<AppState, AppAction> =
-//  Store(
-//    initialValue: initialAppState,
-//    reducer: with(
-//		appReducer,
-//      compose(
-//        logging,
-//        activityFeed
-//    )),
-//    environment: live
-//)

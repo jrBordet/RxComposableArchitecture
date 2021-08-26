@@ -21,7 +21,7 @@ public let counterReducer = Reducer<CounterState, CounterAction, CounterEnvironm
 	case .isPrime:
 		state.isLoading = true
 		return [
-			environment(state.count).map(CounterAction.isPrimeResponse)
+			environment.isPrime(state.count).map(CounterAction.isPrimeResponse)
 		]
 		
 	case let .isPrimeResponse(value):
@@ -56,7 +56,7 @@ private func find(value searchValue: Int, in array: [Int]) -> Int? {
 			return index
 		}
 	}
-
+	
 	return nil
 }
 
@@ -111,9 +111,21 @@ public enum CounterAction: Equatable {
 
 // MARK: - Counter Environment
 
-public typealias CounterEnvironment = (Int) -> Effect<Bool>
+public typealias CounterEnvironment = (
+	isPrime: (Int) -> Effect<Bool>,
+	trivia: (Int) -> Effect<String>
+)
 
-let mock_counter_environment: CounterEnvironment = { v in
+let mock_counter_environment: CounterEnvironment = (
+	isPrime: isprime,
+	trivia: trivia
+)
+
+let trivia = { (v: Int) in
+	Effect.sync { "\(v) is awesome" }
+}
+
+let isprime = { v in
 	Effect.sync {
 		isPrime(v)
 	}

@@ -7,7 +7,6 @@
 
 import XCTest
 @testable import RxComposableArchitectureDemo
-import Login
 import Difference
 import RxComposableArchitecture
 import RxSwift
@@ -17,11 +16,14 @@ class CounterTests: XCTestCase {
 	
 	let initialValue = CounterState.empty
 	
-	let env: CounterEnvironment = { _ in
-		Effect.sync {
-			true
+	let env: CounterEnvironment = (
+		isPrime: { _ in
+			Effect.sync { true }
+		},
+		trivia: { (v: Int) in
+			Effect.sync { "\(v) is awesome" }
 		}
-	}
+	)
 	
 	func testCounterIncr() {
 		assert(
@@ -90,7 +92,6 @@ class CounterTests: XCTestCase {
 	}
 	
 	func testCounterRemoveFavorite() {
-		
 		let initialValue = CounterState(
 			count: 0,
 			isLoading: false,

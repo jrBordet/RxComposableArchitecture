@@ -7,18 +7,24 @@
 
 import XCTest
 @testable import RxComposableArchitectureDemo
-import Login
 import Difference
 import RxComposableArchitecture
 import RxSwift
 import RxCocoa
 
+let counterEnvironment: CounterEnvironment = (
+	isPrime: { _ in
+		Effect.sync { true }
+	},
+	trivia: { (v: Int) in
+		Effect.sync { "\(v) is awesome" }
+	}
+)
+
 class AppTests: XCTestCase {
 	let initialValue = AppState(counter: .empty, favorites: .empty)
 	
-	let env = AppEnvironment { _ -> Effect<Bool> in
-		Effect.sync { true }
-	}
+	let env = AppEnvironment(counter: counterEnvironment)
 	
 	func testCounterViewAddFavorite() {
 		assert(
