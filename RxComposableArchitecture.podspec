@@ -9,7 +9,7 @@ Pod::Spec.new do |spec|
   spec.source_files = 'RxComposableArchitecture/**/*.{swift}'
   spec.requires_arc = true
   spec.ios.deployment_target = '10.0'
-  spec.dependency 'RxSwift', '~> 5'
-  spec.dependency 'RxCocoa', '~> 5'
+  spec.dependency 'RxSwift', '6.2.0'
+  spec.dependency 'RxCocoa', '6.2.0'
   spec.dependency 'SwiftSpinner', '~> 2.1.0'
 end

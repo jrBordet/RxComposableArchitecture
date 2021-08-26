@@ -8,57 +8,59 @@
 
 import SceneBuilder
 import RxComposableArchitecture
-import Login
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    var window: UIWindow?
-    
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-        
-        // MARK: - Counter
-//        let counterStore = applicationStore.view(
-//            value: { $0.counter },
-//            action: { AppAction.counter($0) }
-//        )
-//
-//        let counterScene = Scene<ViewController>().render()
-//
-//        counterScene.store = counterStore
-        
-        
-        let counterStore = Scene<ViewController>()
-            .render()
-            .apply {
-                $0.store = applicationStore.view(
-                    value: { $0.counter },
-                    action: { AppAction.counter($0) }
-                )
-            }
-        
-        
-        // MARK: - Login
-        let loginScene = UIViewController
-            .login
-            .apply {
-                $0.store = applicationStore.view(
-                    value: { $0.login },
-                    action: { .login($0) }
-                )
-            }
-        
-        self.window?.rootViewController = UINavigationController(rootViewController: loginScene)
-        
-        self.window?.makeKeyAndVisible()
-        self.window?.backgroundColor = .white 
-        
-        return true
-    }
-}
-
-extension UIViewController {
-    static var login: LoginViewController = Scene<LoginViewController>().render()
+	var window: UIWindow?
+	
+	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+		
+		self.window = UIWindow(frame: UIScreen.main.bounds)
+		
+		// MARK: - Counter
+		
+		let counter = Scene<CounterViewController>()
+			.render()
+			.apply {
+				$0.store = applicationStore.scope(
+					value: { $0.counterView },
+					action: { .counter($0) }
+				)
+			}
+		
+		let counterNav = UINavigationController.init(rootViewController: counter)
+		
+		// MARK: - Favorites
+		
+		let favorites = Scene<FavoritesViewController>()
+			.render()
+			.apply {
+				$0.store = applicationStore.scope(
+					value: { $0.favoritesView },
+					action: { .favorites($0) }
+				)
+			}
+				
+		// Tab bar
+		let tabBarController = UITabBarController()
+		
+		let item1 = UITabBarItem(title: "Counter", image: UIImage(named: ""), tag: 0)
+		let item2 = UITabBarItem(title: "Favorites", image:  UIImage(named: ""), tag: 1)
+		
+		counterNav.tabBarItem = item1
+		favorites.tabBarItem = item2
+		
+		tabBarController.setViewControllers([
+			counterNav,
+			favorites
+		], animated: false)
+		
+		// Window root
+		self.window?.rootViewController = tabBarController
+		
+		self.window?.makeKeyAndVisible()
+		self.window?.backgroundColor = .white
+		
+		return true
+	}
 }
