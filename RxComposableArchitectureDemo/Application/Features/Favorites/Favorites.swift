@@ -28,12 +28,12 @@ public enum FavoritesAction: Equatable {
 	case selectAt(Int)
 	case remove
 	
-	case isPrime, isPrimeResponse(Bool)
+	case isPrime, isPrimeResponse(Result<Bool, NSError>)
 	case trivia, triviaResponse(String)
 }
 
 public typealias FavoritesEnvironment = (
-	isPrime: (Int) -> Effect<Bool>,
+	isPrime: (Int) -> Effect<Result<Bool, NSError>>,
 	trivia: (Int) -> Effect<String>
 )
 
@@ -66,8 +66,11 @@ public let favoritesReducer: Reducer<FavoritesState, FavoritesAction, FavoritesE
 			environment.isPrime(selected).map(FavoritesAction.isPrimeResponse)
 		]
 		
-	case let .isPrimeResponse(v):
-		state.isPrime = v
+	case let .isPrimeResponse(.success(value)):
+		state.isPrime = value
+		return []
+		
+	case let .isPrimeResponse(.failure(e)):
 		return []
 		
 	case let .selectAt(index):

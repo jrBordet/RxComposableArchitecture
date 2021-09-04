@@ -24,9 +24,17 @@ public let counterReducer = Reducer<CounterState, CounterAction, CounterEnvironm
 			environment.isPrime(state.count).map(CounterAction.isPrimeResponse)
 		]
 		
-	case let .isPrimeResponse(value):
+	case let .isPrimeResponse(.success(value)):
 		state.isLoading = false
 		state.isPrime = value
+		state.genericError = nil
+		
+		return []
+	
+	case let .isPrimeResponse(.failure(e)):
+		state.isLoading = false
+		state.genericError = GenericErrorState(title: "error", message: "something goes wrong")
+		
 		return []
 		
 	case .addFavorite:
@@ -44,8 +52,14 @@ public let counterReducer = Reducer<CounterState, CounterAction, CounterEnvironm
 		
 		state.favorites = copy
 		return []
+		
 	case .resetPrime:
 		state.isPrime = nil
+		return []
+		
+	case .dismiss:
+		state.genericError = nil
+		
 		return []
 	}
 }
@@ -67,6 +81,8 @@ public struct CounterState {
 	var isPrime: Bool?
 	
 	var favorites: [Int]
+	
+	var genericError: GenericErrorState?
 }
 
 extension CounterState: Equatable { }
@@ -101,18 +117,20 @@ public enum CounterAction: Equatable {
 	case decrTapped
 	
 	case isPrime
-	case isPrimeResponse(Bool)
+	case isPrimeResponse(Result<Bool, NSError>)
 	
 	case addFavorite
 	case removeFavorite
 	
 	case resetPrime
+	
+	case dismiss
 }
 
 // MARK: - Counter Environment
 
 public typealias CounterEnvironment = (
-	isPrime: (Int) -> Effect<Bool>,
+	isPrime: (Int) -> Effect<Result<Bool, NSError>>,
 	trivia: (Int) -> Effect<String>
 )
 

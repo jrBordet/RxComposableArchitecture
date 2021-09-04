@@ -45,13 +45,17 @@ func triviaRequest(_ v: Int) -> Observable<String>{
 		.catchAndReturn("")
 }
 
-public func isPrime (_ p: Int) -> Bool {
-	if p <= 1 { return false }
-	if p <= 3 { return true }
-	
-	for i in 2...Int(sqrtf(Float(p))) {
-		if p % i == 0 { return false }
+func isPrime (_ p: Int) -> Result<Bool, NSError> {
+	guard p >= 0 else {
+		return .failure(NSError(domain: "is prime error", code: -1, userInfo: nil))
 	}
 	
-	return true
+	if p <= 1 { return  .success(false) }
+	if p <= 3 { return  .success(true) }
+	
+	for i in 2...Int(sqrtf(Float(p))) {
+		if p % i == 0 { return .success(false) }
+	}
+	
+	return .success(true)
 }
