@@ -18,7 +18,7 @@ class FavoritesTests: XCTestCase {
 	
 	let env: CounterEnvironment = (
 		isPrime: { _ in
-			Effect.sync { true }
+			Effect.sync { .success(true) }
 		},
 		trivia: { (v: Int) in
 			Effect.sync { "\(v) is awesome" }
@@ -109,7 +109,7 @@ class FavoritesTests: XCTestCase {
 			steps: Step(.send, FavoritesAction.isPrime, { state in
 				state.selected = 2
 			}),
-			Step(.receive, FavoritesAction.isPrimeResponse(true), { state in
+			Step(.receive, FavoritesAction.isPrimeResponse(.success(true)), { state in
 				state.isPrime = true
 			})
 			

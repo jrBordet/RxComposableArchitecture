@@ -18,7 +18,7 @@ class CounterTests: XCTestCase {
 	
 	let env: CounterEnvironment = (
 		isPrime: { _ in
-			Effect.sync { true }
+			Effect.sync { .success(true) }
 		},
 		trivia: { (v: Int) in
 			Effect.sync { "\(v) is awesome" }
@@ -67,7 +67,7 @@ class CounterTests: XCTestCase {
 			Step(.send, .isPrime, { state in
 				state.isLoading = true
 			}),
-			Step(.receive, CounterAction.isPrimeResponse(true), { state in
+			Step(.receive, CounterAction.isPrimeResponse(.success(true)), { state in
 				state.isPrime = true
 				state.isLoading = false
 			})

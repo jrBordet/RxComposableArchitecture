@@ -18,5 +18,17 @@ let appReducer: Reducer<AppState, AppAction, AppEnvironment> = Reducer.combine(
 		value: \AppState.favoritesView,
 		action: /AppAction.favorites,
 		environment: { $0.counter }
-	)
+	),
+	genericErrorReducer.optional.pullback(
+		value: \AppState.genericErrorView,
+		action: /AppAction.genericError,
+		environment: { _ in GenericErrorEnvironment() }
+	), Reducer<AppState, AppAction, AppEnvironment> { state, action, env -> [Effect<AppAction>] in
+		if case AppAction.genericError(GenericErrorAction.dismiss) = action {
+			state.genericError = nil
+			return []
+		}
+		
+		return []
+	}
 )

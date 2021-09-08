@@ -69,10 +69,6 @@ extension Reducer where Environment == Void {
 ///         environment: { ModalEnvironment(mainQueue: $0.mainQueue) }
 ///       )
 ///
-/// - See also: `IfLetStore`, a SwiftUI helper for transforming a store on optional state into a
-///   store on non-optional state.
-/// - See also: `Store.ifLet`, a UIKit helper for doing imperative work with a store on optional
-///   state.s
 extension Reducer {
 	public var optional: Reducer<State?, Action, Environment> {
 		.init { value, action, environment in

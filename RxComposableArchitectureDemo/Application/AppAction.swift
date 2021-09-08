@@ -7,7 +7,8 @@
 
 import Foundation
 
-public enum AppAction: Equatable {
+enum AppAction: Equatable {
     case counter(CounterAction)
 	case favorites(FavoritesAction)
+	case genericError(GenericErrorAction)
 }
