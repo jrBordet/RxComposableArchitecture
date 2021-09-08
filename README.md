@@ -3,7 +3,7 @@
 
 ## Installation
 
-To run the project, clone the repo, and run `pod install` from the root directory first.
+To run the project, clone the repo, and run `make setup` and `pod install` from the root directory first.
 
 ```ruby
 source 'https://github.com/jrBordet/Sources.git'
@@ -24,6 +24,8 @@ end
 ```
 
 ```ruby
+make setup
+
 pod install
 ```
 
