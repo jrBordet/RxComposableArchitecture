@@ -18,8 +18,16 @@ extension AppEnvironment {
 	enum env {
 		static let live = AppEnvironment(
 			counter: (
-				isPrime: { v in Effect.sync { isPrime(v) } },
-				trivia: { triviaRequest($0) }
+				isPrime: { v in
+					Effect
+						.sync {
+							isPrime(v)
+						}
+						.delay(RxTimeInterval.seconds(3), scheduler: MainScheduler.asyncInstance)
+				},
+				trivia: {
+					triviaRequest($0)
+				}
 			)
 		)
 		

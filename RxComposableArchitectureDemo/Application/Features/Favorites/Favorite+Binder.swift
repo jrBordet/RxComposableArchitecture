@@ -17,4 +17,5 @@ public extension Reactive where Base: Store<FavoritesState, FavoritesAction> {
 			store.send(FavoritesAction.selectAt(value))
 		}
 	}
+	
 }

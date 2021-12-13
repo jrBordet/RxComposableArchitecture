@@ -51,6 +51,8 @@ class CounterViewController: UIViewController, StoreViewController {
 		
 		isPrimeButton.rx
 			.tap
+			.debounce(.seconds(1), scheduler: MainScheduler.instance)
+			//.throttle(.seconds(3), scheduler: MainScheduler.instance)
 			.bind(to: store.rx.isPrime)
 			.disposed(by: disposeBag)
 		
@@ -71,6 +73,7 @@ class CounterViewController: UIViewController, StoreViewController {
 		
 		addButton.rx
 			.tap
+			//.debounce(.milliseconds(280), scheduler: MainScheduler.instance)
 			.flatMapLatest { v -> Observable<Bool> in
 				store.state
 					.take(1)

@@ -13,6 +13,7 @@ import os.log
 struct GenericErrorState: Equatable {
 	var title: String
 	var message: String
+	var isDismissed: Bool
 }
 
 enum GenericErrorAction: Equatable {
@@ -26,6 +27,7 @@ let genericErrorReducer = Reducer<GenericErrorState, GenericErrorAction, Generic
 	case .dismiss:
 		state.title = ""
 		state.message = ""
+		state.isDismissed = true
 		return []
 	}
 }
@@ -79,7 +81,7 @@ extension AppState {
 		}
 		
 		set {
-			if newValue?.title.isEmpty ?? true && newValue?.message.isEmpty ?? true {
+			if let dismissed = newValue?.isDismissed, dismissed {
 				self.counter.genericError = nil
 			}
 			

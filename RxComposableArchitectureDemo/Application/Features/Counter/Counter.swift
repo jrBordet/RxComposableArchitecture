@@ -33,7 +33,11 @@ public let counterReducer = Reducer<CounterState, CounterAction, CounterEnvironm
 	
 	case let .isPrimeResponse(.failure(e)):
 		state.isLoading = false
-		state.genericError = GenericErrorState(title: "error", message: "something goes wrong")
+		state.genericError = GenericErrorState(
+			title: "error",
+			message: "something goes wrong",
+			isDismissed: false
+		)
 		
 		return []
 		

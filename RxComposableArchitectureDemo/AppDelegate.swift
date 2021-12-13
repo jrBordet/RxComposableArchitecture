@@ -10,9 +10,12 @@ import SceneBuilder
 import RxComposableArchitecture
 import RxSwift
 
+/// https://www.pointfree.co/collections/composable-architecture/side-effects/ep81-the-combine-framework-and-effects-part-2
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
+	
 	private let disposeBag = DisposeBag()
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -21,8 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		// MARK: - Counter
 		
-		let counter = Scene<CounterViewController>()
-			.render()
+		let counter = CounterViewController()
 			.apply {
 				$0.store = applicationStore.scope(
 					value: { $0.counterView },
@@ -34,8 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		// MARK: - Favorites
 		
-		let favorites = Scene<FavoritesViewController>()
-			.render()
+		let favorites = FavoritesViewController()
 			.apply {
 				$0.store = applicationStore.scope(
 					value: { $0.favoritesView },
@@ -45,9 +46,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		// MARK: - Handle global GENERIC ERROR
 		
-		applicationStore.state
+		applicationStore
+			.state
 			.map { $0.genericError }
 			.ignoreNil()
+			.distinctUntilChanged()
 			.subscribe { (state: GenericErrorState) in
 				if let topVC = UIApplication.getTopViewController() {
 					let ac = UIAlertController(
@@ -69,9 +72,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 					topVC.present(ac, animated: true, completion: nil)
 				}
 				
-			}.disposed(by: disposeBag)
+			}
+			.disposed(by: disposeBag)
 		
-				
 		// Tab bar
 		let tabBarController = UITabBarController()
 		
