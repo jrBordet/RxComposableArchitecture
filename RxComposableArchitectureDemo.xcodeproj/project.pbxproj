@@ -33,6 +33,8 @@
 		F804CA2027882A5500ED6BD1 /* ViewStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA1F27882A5500ED6BD1 /* ViewStore.swift */; };
 		F804CA292788363500ED6BD1 /* TestScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA2227882F6F00ED6BD1 /* TestScheduler.swift */; };
 		F804CA2A2788364000ED6BD1 /* TestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA192785FE3300ED6BD1 /* TestStore.swift */; };
+		F804CA2E27884C8A00ED6BD1 /* ReducerDebugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA2D27884C8A00ED6BD1 /* ReducerDebugging.swift */; };
+		F804CA3027884CD900ED6BD1 /* ReducerInstrumentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA2F27884CD900ED6BD1 /* ReducerInstrumentation.swift */; };
 		F873475D26CBC899001127A8 /* CounterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F873475C26CBC899001127A8 /* CounterTests.swift */; };
 		F89FCCC326D4C84400DC5D11 /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89FCCC226D4C84400DC5D11 /* AppTests.swift */; };
 		F89FCCCB26D4CB9400DC5D11 /* CounterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89FCCC926D4CB9400DC5D11 /* CounterViewController.swift */; };
@@ -126,6 +128,8 @@
 		F804CA1D2785FF9200ED6BD1 /* Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diff.swift; sourceTree = "<group>"; };
 		F804CA1F27882A5500ED6BD1 /* ViewStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStore.swift; sourceTree = "<group>"; };
 		F804CA2227882F6F00ED6BD1 /* TestScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestScheduler.swift; sourceTree = "<group>"; };
+		F804CA2D27884C8A00ED6BD1 /* ReducerDebugging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReducerDebugging.swift; sourceTree = "<group>"; };
+		F804CA2F27884CD900ED6BD1 /* ReducerInstrumentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReducerInstrumentation.swift; sourceTree = "<group>"; };
 		F873475C26CBC899001127A8 /* CounterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterTests.swift; sourceTree = "<group>"; };
 		F89FCCC226D4C84400DC5D11 /* AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTests.swift; sourceTree = "<group>"; };
 		F89FCCC926D4CB9400DC5D11 /* CounterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterViewController.swift; sourceTree = "<group>"; };
@@ -238,6 +242,7 @@
 		47D3CF61B68DACA787E6B9D0 /* ComposableArchitecture */ = {
 			isa = PBXGroup;
 			children = (
+				F804CA2C27884C7500ED6BD1 /* Debugging */,
 				F310CE10DC638153FE5881D4 /* ComposableArchitecture.swift */,
 				F8B07FA526D37FBA009DD184 /* CasePath */,
 				44B324C1C46D96582124ADDD /* Effect.swift */,
@@ -324,6 +329,15 @@
 				F804CA2227882F6F00ED6BD1 /* TestScheduler.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		F804CA2C27884C7500ED6BD1 /* Debugging */ = {
+			isa = PBXGroup;
+			children = (
+				F804CA2D27884C8A00ED6BD1 /* ReducerDebugging.swift */,
+				F804CA2F27884CD900ED6BD1 /* ReducerInstrumentation.swift */,
+			);
+			path = Debugging;
 			sourceTree = "<group>";
 		};
 		F89FCCC726D4CB7400DC5D11 /* Counter */ = {
@@ -639,9 +653,11 @@
 				F804CA2027882A5500ED6BD1 /* ViewStore.swift in Sources */,
 				F8B07F9A26D37F74009DD184 /* EnumReflection.swift in Sources */,
 				632B3800ADC02D72FD3876C5 /* Effect.swift in Sources */,
+				F804CA3027884CD900ED6BD1 /* ReducerInstrumentation.swift in Sources */,
 				FAED82C1689B9E30A915BE4A /* Rx+extensions.swift in Sources */,
 				F8B07F9C26D37F74009DD184 /* CasePath.swift in Sources */,
 				F804CA162785FC4100ED6BD1 /* Store.swift in Sources */,
+				F804CA2E27884C8A00ED6BD1 /* ReducerDebugging.swift in Sources */,
 				F804CA142785FBB200ED6BD1 /* Reducer.swift in Sources */,
 				16C1B0D0F381C1B7ECA00514 /* Utils.swift in Sources */,
 				F8B07FA126D37F8F009DD184 /* CasePaths.swift in Sources */,

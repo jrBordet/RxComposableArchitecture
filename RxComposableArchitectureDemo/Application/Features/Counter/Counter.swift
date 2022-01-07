@@ -155,6 +155,34 @@ public struct CounterEnvironment {
 	var trivia: (Int) -> Effect<String>
 }
 
+func isPrimeEffect(_ p: Int) -> Effect<Result<Bool, NSError>> {
+	Effect<Result<Bool, NSError>>.run { subscriber in
+		guard p >= 0 else {
+			subscriber.onNext(.success(false))
+			subscriber.onError(NSError(domain: "is prime error", code: -1, userInfo: nil))
+			return Disposables.create()
+		}
+		
+		if p <= 1 {
+			subscriber.onNext(.success(false))
+			return Disposables.create()
+		}
+		
+		if p <= 3 {
+			subscriber.onNext(.success(true))
+			return Disposables.create()
+		}
+		
+		for i in 2...Int(sqrtf(Float(p))) {
+			if p % i == 0 { subscriber.onNext(.success(false)) }
+		}
+		
+		subscriber.onNext(.success(true))
+		
+		return Disposables.create()
+	}
+}
+
 extension CounterEnvironment {
 	static func mock (
 		mainQueue: SchedulerType = MainScheduler.instance,
@@ -167,6 +195,17 @@ extension CounterEnvironment {
 			trivia: trivia
 		)
 	}
+	
+	static var live: Self = .init(
+		mainQueue: MainScheduler.instance,
+		isPrime: { p in
+			isPrimeEffect(p)
+		},
+		trivia: { v in
+			fatalError()
+			
+		}
+	)
 	
 	//	static var mock: CounterEnvironment = .init(
 	//		mainQueue: <#T##SchedulerType#>,
@@ -198,3 +237,29 @@ extension CounterEnvironment {
 ////		isPrime(v)
 ////	}
 //}
+
+func triviaRequest(_ v: Int) -> Observable<String>{
+	URLSession.shared.rx
+		.data(request: URLRequest(url: URL(string: "http://numbersapi.com/\(v)/trivia")!))
+		.debug("[TRIVIA-REQUEST]", trimOutput: false)
+		.map { d -> String? in
+			String(data: d, encoding: .utf8)
+		}
+		.map { $0 ?? "" }
+		.catchAndReturn("")
+}
+
+func isPrime (_ p: Int) -> Result<Bool, NSError> {
+	guard p >= 0 else {
+		return .failure(NSError(domain: "is prime error", code: -1, userInfo: nil))
+	}
+	
+	if p <= 1 { return  .success(false) }
+	if p <= 3 { return  .success(true) }
+	
+	for i in 2...Int(sqrtf(Float(p))) {
+		if p % i == 0 { return .success(false) }
+	}
+	
+	return .success(true)
+}

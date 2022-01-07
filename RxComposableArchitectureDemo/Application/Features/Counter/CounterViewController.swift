@@ -48,6 +48,11 @@ class CounterViewController: UIViewController {
 		  .bind(to: counterLabel.rx.text)
 		  .disposed(by: disposeBag)
 		
+		isPrimeButton.rx
+			.tap
+			.bind { [weak self] in self?.viewStore.send(.isPrime) }
+			.disposed(by: disposeBag)
+		
 //		guard let store = self.store else {
 //			fatalError()
 //		}

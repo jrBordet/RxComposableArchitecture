@@ -24,8 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let counter = CounterViewController(
 			store: Store<CounterState, CounterAction>(
 				initialState: CounterState.empty,
-				reducer: counterReducer,
-				environment: CounterEnvironment.mock()
+				reducer: counterReducer.debug(),
+				environment: CounterEnvironment.live
 			)
 		)
 		
