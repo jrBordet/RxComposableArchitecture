@@ -17,27 +17,18 @@ public let counterReducer = Reducer<CounterState, CounterAction, CounterEnvironm
 		state.count += 1
 		return .none
 		
-		
 	case .decrTapped:
 		state.count -= 1
 		return .none
-		
 		
 	case .isPrime:
 		state.isLoading = true
 		
 		return environment
 			.isPrime(state.count)
-		//			     .delay(.seconds(1), scheduler: scheduler)
 			.observe(on: environment.mainQueue)
 			.map(CounterAction.isPrimeResponse)
 			.eraseToEffect()
-		
-		//		return .none
-		
-		//		return [
-		//			environment.isPrime(state.count).map(CounterAction.isPrimeResponse)
-		//		]
 		
 	case let .isPrimeResponse(.success(value)):
 		state.isLoading = false
@@ -211,30 +202,6 @@ extension CounterEnvironment {
 		trivia: triviaEffect
 	)
 }
-
-//public typealias CounterEnvironment = (
-//	isPrime: (Int) -> Effect<Result<Bool, NSError>>,
-//	trivia: (Int) -> Effect<String>
-//)
-//
-//let mock_counter_environment: CounterEnvironment = (
-//	isPrime: isprime,
-//	trivia: trivia
-//)
-//
-//let trivia = { (v: Int) in
-//	fatalError()
-//
-//	//Effect.sync { "\(v) is awesome" }
-//}
-//
-//let isprime = {
-//	fatalError()
-//
-////	Effect.sync {
-////		isPrime(v)
-////	}
-//}
 
 func triviaRequest(_ v: Int) -> Observable<String>{
 	URLSession.shared.rx

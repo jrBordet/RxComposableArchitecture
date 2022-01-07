@@ -22,13 +22,10 @@ class CounterTests: XCTestCase {
 		let store = TestStore(
 			initialState: CounterState.empty,
 			reducer: counterReducer,
-			environment: CounterEnvironment(
+			environment: .mock(
 				mainQueue: scheduler,
 				isPrime: { value in
 					Effect(value: .success(true))
-				},
-				trivia: { _ in
-					fatalError()
 				}
 			)
 		)

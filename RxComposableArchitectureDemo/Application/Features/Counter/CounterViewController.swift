@@ -63,7 +63,6 @@ class CounterViewController: UIViewController {
 			.bind { [weak self] in self?.viewStore.send(.isPrime) }
 			.disposed(by: disposeBag)
 		
-		
 		viewStore.publisher
 			.map { $0.isLoading }
 			.bind(to: SwiftSpinner.shared.rx_visible)

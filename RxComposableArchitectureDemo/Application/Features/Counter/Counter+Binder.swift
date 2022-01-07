@@ -10,6 +10,14 @@ import RxSwift
 import RxCocoa
 import RxComposableArchitecture
 
+public extension Reactive where Base: ViewStore<CounterState, CounterAction> {
+	var incr: Binder<Void> {
+		Binder(self.base) { store, value in
+			store.send(.incrTapped)
+		}
+	}
+}
+
 public extension Reactive where Base: Store<CounterState, CounterAction> {
 	
 //	var incr: Binder<Void> {

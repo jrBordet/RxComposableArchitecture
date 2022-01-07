@@ -23,12 +23,10 @@ public final class Store<State, Action> {
   private let reducer: (inout State, Action) -> Effect<Action>
 
   private var stateRelay: BehaviorRelay<State>
-  
-	public private(set) var state: State {
-	get { stateRelay.value }
+  public private(set) var state: State {
+	get { return stateRelay.value }
 	set { stateRelay.accept(newValue) }
   }
-	
   var observable: Observable<State> {
 	return stateRelay.asObservable()
   }
@@ -166,7 +164,7 @@ public final class Store<State, Action> {
 	  if self.isSending {
 		assertionFailure(
 		  """
-		  The store was sent the action while it was already
+		  The store was sent the action \(debugCaseOutput(action)) while it was already
 		  processing another action.
 
 		  This can happen for a few reasons:
@@ -263,3 +261,4 @@ public struct StorePublisher<State>: ObservableType {
 	.init(self.upstream.map { $0[keyPath: keyPath] }.distinctUntilChanged())
   }
 }
+
