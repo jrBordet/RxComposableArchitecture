@@ -8,6 +8,13 @@
 import Foundation
 import RxComposableArchitecture
 
+var applicationStore: Store<AppState, AppAction> =
+  Store(
+	initialState: initialAppState,
+	reducer: appReducer,
+	environment: live
+)
+
 //var applicationStore: Store<AppState, AppAction> =
 //  Store(
 //    initialValue: initialAppState,

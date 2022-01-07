@@ -18,7 +18,7 @@
 		632B3800ADC02D72FD3876C5 /* Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B324C1C46D96582124ADDD /* Effect.swift */; };
 		72CDE108A8EB78700E41099A /* ComposableArchitecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = F310CE10DC638153FE5881D4 /* ComposableArchitecture.swift */; };
 		84BED1BE7971E35F6D47F394 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5187865AF0D5E49500B89236 /* LaunchScreen.storyboard */; };
-		8D4CCD712D4BE17074E88DA7 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E338260A654C3B1BDD45E05A /* Environment.swift */; };
+		8D4CCD712D4BE17074E88DA7 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E338260A654C3B1BDD45E05A /* AppEnvironment.swift */; };
 		B432C493AFE13AAE38B95878 /* RxComposableArchitecture.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 881C79922FFBC8E5F0327FBB /* RxComposableArchitecture.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B62653DC37C26CC7C0DEB4DC /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07DA406F4CF76EEFD014B74 /* AppStore.swift */; };
 		C471F54D8464C5866325DAB1 /* AppReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683276346E4E459AC99B8D0C /* AppReducer.swift */; };
@@ -118,7 +118,7 @@
 		C7D4B60681078E0875B6A775 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CA2E7AEC6B172594567AE29B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D17F3CC0C0CD07F2754B813F /* Pods_RxComposableArchitecture.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxComposableArchitecture.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E338260A654C3B1BDD45E05A /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		E338260A654C3B1BDD45E05A /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		F07DA406F4CF76EEFD014B74 /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
 		F310CE10DC638153FE5881D4 /* ComposableArchitecture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposableArchitecture.swift; sourceTree = "<group>"; };
 		F804CA132785FBB200ED6BD1 /* Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reducer.swift; sourceTree = "<group>"; };
@@ -286,7 +286,7 @@
 				683276346E4E459AC99B8D0C /* AppReducer.swift */,
 				4EC4B0FE2E6CDF5991338F1B /* AppState.swift */,
 				F07DA406F4CF76EEFD014B74 /* AppStore.swift */,
-				E338260A654C3B1BDD45E05A /* Environment.swift */,
+				E338260A654C3B1BDD45E05A /* AppEnvironment.swift */,
 				0A87B7447DB682E0B629909A /* Features */,
 			);
 			path = Application;
@@ -638,7 +638,7 @@
 				B62653DC37C26CC7C0DEB4DC /* AppStore.swift in Sources */,
 				EAC0EB863F53D543A66B2545 /* Counter.swift in Sources */,
 				F8C0227026D4F56D004CE411 /* FavoriteCell.swift in Sources */,
-				8D4CCD712D4BE17074E88DA7 /* Environment.swift in Sources */,
+				8D4CCD712D4BE17074E88DA7 /* AppEnvironment.swift in Sources */,
 				F89FCCCB26D4CB9400DC5D11 /* CounterViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
