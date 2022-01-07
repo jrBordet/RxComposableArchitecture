@@ -155,11 +155,20 @@ public struct CounterEnvironment {
 	var trivia: (Int) -> Effect<String>
 }
 
+func triviaEffect(_ v: Int) -> Effect<String> {
+	URLSession.shared.rx
+		.data(request: URLRequest(url: URL(string: "http://numbersapi.com/\(v)/trivia")!))
+		.debug("[TRIVIA-REQUEST]", trimOutput: false)
+		.map { String(data: $0, encoding: .utf8) }
+		.map { $0 ?? "" }
+		.catchAndReturn("")
+		.eraseToEffect()
+}
+
 func isPrimeEffect(_ p: Int) -> Effect<Result<Bool, NSError>> {
 	Effect<Result<Bool, NSError>>.run { subscriber in
 		guard p >= 0 else {
 			subscriber.onNext(.success(false))
-			subscriber.onError(NSError(domain: "is prime error", code: -1, userInfo: nil))
 			return Disposables.create()
 		}
 		
@@ -198,20 +207,9 @@ extension CounterEnvironment {
 	
 	static var live: Self = .init(
 		mainQueue: MainScheduler.instance,
-		isPrime: { p in
-			isPrimeEffect(p)
-		},
-		trivia: { v in
-			fatalError()
-			
-		}
+		isPrime: isPrimeEffect,
+		trivia: triviaEffect
 	)
-	
-	//	static var mock: CounterEnvironment = .init(
-	//		mainQueue: <#T##SchedulerType#>,
-	//		isPrime: <#T##(Int) -> Effect<Result<Bool, NSError>>#>,
-	//		trivia: <#T##(Int) -> Effect<String>#>
-	//	)
 }
 
 //public typealias CounterEnvironment = (
