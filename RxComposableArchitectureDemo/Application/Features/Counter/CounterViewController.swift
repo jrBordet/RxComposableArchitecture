@@ -11,6 +11,16 @@ import RxCocoa
 import RxComposableArchitecture
 import SwiftSpinner
 
+extension CounterViewController {
+	static let sample = CounterViewController(
+		store: Store<CounterState, CounterAction>(
+			initialState: CounterState.empty,
+			reducer: counterReducer.debug(),
+			environment: CounterEnvironment.live
+		)
+	)
+}
+
 class CounterViewController: UIViewController {
 	@IBOutlet var decrButton: UIButton!
 	@IBOutlet var counterLabel: UILabel!

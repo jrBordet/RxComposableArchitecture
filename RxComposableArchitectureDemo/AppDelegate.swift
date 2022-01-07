@@ -20,36 +20,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		self.window = UIWindow(frame: UIScreen.main.bounds)
 		
 		// MARK: - Counter
-		
-		let counter = CounterViewController(
-			store: Store<CounterState, CounterAction>(
-				initialState: CounterState.empty,
-				reducer: counterReducer.debug(),
-				environment: CounterEnvironment.live
-			)
+				
+		let counterStore = applicationStore.scope(
+			state: { $0.counterView },
+			action: { .counter($0) }
 		)
 		
-//		let counter = Scene<CounterViewController>()
-//			.render()
-//			.apply {
-//				$0.store = applicationStore.scope(
-//					value: { $0.counterView },
-//					action: { .counter($0) }
-//				)
-//			}
-		
-//		let counterNav = UINavigationController(rootViewController: counter)
+		let counter = CounterViewController(
+			store: counterStore
+		)
 		
 		// MARK: - Favorites
 		
-//		let favorites = Scene<FavoritesViewController>()
-//			.render()
-//			.apply {
-//				$0.store = applicationStore.scope(
-//					value: { $0.favoritesView },
-//					action: { .favorites($0) }
-//				)
-//			}
+		let favorites = FavoritesViewController(
+			store: applicationStore.scope(
+				state: { $0.favoritesView },
+				action: { .favorites($0) }
+			)
+		)
 		
 		// MARK: - Handle global GENERIC ERROR
 		
@@ -78,7 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //				}
 //
 //			}.disposed(by: disposeBag)
-//
+
 				
 		// Tab bar
 		let tabBarController = UITabBarController()
@@ -86,16 +74,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let item1 = UITabBarItem(title: "Counter", image: UIImage(named: ""), tag: 0)
 		let item2 = UITabBarItem(title: "Favorites", image:  UIImage(named: ""), tag: 1)
 		
-//		counterNav.tabBarItem = item1
-//		favorites.tabBarItem = item2
-//		
-//		tabBarController.setViewControllers([
-//			counterNav,
-//			favorites
-//		], animated: false)
+		counter.tabBarItem = item1
+		favorites.tabBarItem = item2
+		
+		tabBarController.setViewControllers([
+			counter,
+			favorites
+		], animated: false)
 		
 		// Window root
-		self.window?.rootViewController = counter
+		self.window?.rootViewController = tabBarController
 		
 		self.window?.makeKeyAndVisible()
 		self.window?.backgroundColor = .white
