@@ -21,56 +21,64 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		// MARK: - Counter
 		
-		let counter = Scene<CounterViewController>()
-			.render()
-			.apply {
-				$0.store = applicationStore.scope(
-					value: { $0.counterView },
-					action: { .counter($0) }
-				)
-			}
+		let counter = CounterViewController(
+			store: Store<CounterState, CounterAction>(
+				initialState: CounterState.empty,
+				reducer: counterReducer,
+				environment: CounterEnvironment.mock()
+			)
+		)
 		
-		let counterNav = UINavigationController(rootViewController: counter)
+//		let counter = Scene<CounterViewController>()
+//			.render()
+//			.apply {
+//				$0.store = applicationStore.scope(
+//					value: { $0.counterView },
+//					action: { .counter($0) }
+//				)
+//			}
+		
+//		let counterNav = UINavigationController(rootViewController: counter)
 		
 		// MARK: - Favorites
 		
-		let favorites = Scene<FavoritesViewController>()
-			.render()
-			.apply {
-				$0.store = applicationStore.scope(
-					value: { $0.favoritesView },
-					action: { .favorites($0) }
-				)
-			}
+//		let favorites = Scene<FavoritesViewController>()
+//			.render()
+//			.apply {
+//				$0.store = applicationStore.scope(
+//					value: { $0.favoritesView },
+//					action: { .favorites($0) }
+//				)
+//			}
 		
 		// MARK: - Handle global GENERIC ERROR
 		
-		applicationStore.state
-			.map { $0.genericError }
-			.ignoreNil()
-			.subscribe { (state: GenericErrorState) in
-				if let topVC = UIApplication.getTopViewController() {
-					let ac = UIAlertController(
-						title: state.title,
-						message: state.message,
-						preferredStyle: UIAlertController.Style.alert
-					)
-					
-					ac.addAction(
-						UIAlertAction(
-							title: "dismiss",
-							style: UIAlertAction.Style.cancel,
-							handler: { (a: UIAlertAction) in
-								applicationStore.send(AppAction.genericError(GenericErrorAction.dismiss))
-							}
-						)
-					)
-					
-					topVC.present(ac, animated: true, completion: nil)
-				}
-				
-			}.disposed(by: disposeBag)
-		
+//		applicationStore.state
+//			.map { $0.genericError }
+//			.ignoreNil()
+//			.subscribe { (state: GenericErrorState) in
+//				if let topVC = UIApplication.getTopViewController() {
+//					let ac = UIAlertController(
+//						title: state.title,
+//						message: state.message,
+//						preferredStyle: UIAlertController.Style.alert
+//					)
+//
+//					ac.addAction(
+//						UIAlertAction(
+//							title: "dismiss",
+//							style: UIAlertAction.Style.cancel,
+//							handler: { (a: UIAlertAction) in
+//								applicationStore.send(AppAction.genericError(GenericErrorAction.dismiss))
+//							}
+//						)
+//					)
+//
+//					topVC.present(ac, animated: true, completion: nil)
+//				}
+//
+//			}.disposed(by: disposeBag)
+//
 				
 		// Tab bar
 		let tabBarController = UITabBarController()
@@ -78,16 +86,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let item1 = UITabBarItem(title: "Counter", image: UIImage(named: ""), tag: 0)
 		let item2 = UITabBarItem(title: "Favorites", image:  UIImage(named: ""), tag: 1)
 		
-		counterNav.tabBarItem = item1
-		favorites.tabBarItem = item2
-		
-		tabBarController.setViewControllers([
-			counterNav,
-			favorites
-		], animated: false)
+//		counterNav.tabBarItem = item1
+//		favorites.tabBarItem = item2
+//		
+//		tabBarController.setViewControllers([
+//			counterNav,
+//			favorites
+//		], animated: false)
 		
 		// Window root
-		self.window?.rootViewController = tabBarController
+		self.window?.rootViewController = counter
 		
 		self.window?.makeKeyAndVisible()
 		self.window?.backgroundColor = .white

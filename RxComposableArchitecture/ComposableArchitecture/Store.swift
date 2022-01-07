@@ -23,10 +23,12 @@ public final class Store<State, Action> {
   private let reducer: (inout State, Action) -> Effect<Action>
 
   private var stateRelay: BehaviorRelay<State>
-  public private(set) var state: State {
-	get { return stateRelay.value }
+  
+	public private(set) var state: State {
+	get { stateRelay.value }
 	set { stateRelay.accept(newValue) }
   }
+	
   var observable: Observable<State> {
 	return stateRelay.asObservable()
   }

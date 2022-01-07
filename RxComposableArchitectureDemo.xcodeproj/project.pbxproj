@@ -28,9 +28,11 @@
 		EAC0EB863F53D543A66B2545 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906C624376962C4679C5FA65 /* Counter.swift */; };
 		F804CA142785FBB200ED6BD1 /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA132785FBB200ED6BD1 /* Reducer.swift */; };
 		F804CA162785FC4100ED6BD1 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA152785FC4100ED6BD1 /* Store.swift */; };
-		F804CA1A2785FE3300ED6BD1 /* TestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA192785FE3300ED6BD1 /* TestStore.swift */; };
 		F804CA1C2785FF6B00ED6BD1 /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA1B2785FF6B00ED6BD1 /* Debug.swift */; };
 		F804CA1E2785FF9200ED6BD1 /* Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA1D2785FF9200ED6BD1 /* Diff.swift */; };
+		F804CA2027882A5500ED6BD1 /* ViewStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA1F27882A5500ED6BD1 /* ViewStore.swift */; };
+		F804CA292788363500ED6BD1 /* TestScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA2227882F6F00ED6BD1 /* TestScheduler.swift */; };
+		F804CA2A2788364000ED6BD1 /* TestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA192785FE3300ED6BD1 /* TestStore.swift */; };
 		F873475D26CBC899001127A8 /* CounterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F873475C26CBC899001127A8 /* CounterTests.swift */; };
 		F89FCCC326D4C84400DC5D11 /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89FCCC226D4C84400DC5D11 /* AppTests.swift */; };
 		F89FCCCB26D4CB9400DC5D11 /* CounterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89FCCC926D4CB9400DC5D11 /* CounterViewController.swift */; };
@@ -122,6 +124,8 @@
 		F804CA192785FE3300ED6BD1 /* TestStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStore.swift; sourceTree = "<group>"; };
 		F804CA1B2785FF6B00ED6BD1 /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
 		F804CA1D2785FF9200ED6BD1 /* Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diff.swift; sourceTree = "<group>"; };
+		F804CA1F27882A5500ED6BD1 /* ViewStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStore.swift; sourceTree = "<group>"; };
+		F804CA2227882F6F00ED6BD1 /* TestScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestScheduler.swift; sourceTree = "<group>"; };
 		F873475C26CBC899001127A8 /* CounterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterTests.swift; sourceTree = "<group>"; };
 		F89FCCC226D4C84400DC5D11 /* AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTests.swift; sourceTree = "<group>"; };
 		F89FCCC926D4CB9400DC5D11 /* CounterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterViewController.swift; sourceTree = "<group>"; };
@@ -242,6 +246,7 @@
 				F804CA152785FC4100ED6BD1 /* Store.swift */,
 				F804CA1B2785FF6B00ED6BD1 /* Debug.swift */,
 				F804CA1D2785FF9200ED6BD1 /* Diff.swift */,
+				F804CA1F27882A5500ED6BD1 /* ViewStore.swift */,
 			);
 			path = ComposableArchitecture;
 			sourceTree = "<group>";
@@ -260,9 +265,10 @@
 		87F49BD9BC4D4F3A5E22237F /* RxComposableArchitectureTests */ = {
 			isa = PBXGroup;
 			children = (
+				F804CA2127882F5600ED6BD1 /* Helpers */,
 				B671875B6FD166D1E2DB6236 /* ComposableArchitectureTestSupport.swift */,
-				5D935005D78AF6C717627729 /* Info.plist */,
 				F804CA192785FE3300ED6BD1 /* TestStore.swift */,
+				5D935005D78AF6C717627729 /* Info.plist */,
 			);
 			path = RxComposableArchitectureTests;
 			sourceTree = "<group>";
@@ -310,6 +316,14 @@
 				9A4A3D9BA69625AB3E32964A /* Application */,
 			);
 			path = RxComposableArchitectureDemo;
+			sourceTree = "<group>";
+		};
+		F804CA2127882F5600ED6BD1 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				F804CA2227882F6F00ED6BD1 /* TestScheduler.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		F89FCCC726D4CB7400DC5D11 /* Counter */ = {
@@ -619,10 +633,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F804CA1A2785FE3300ED6BD1 /* TestStore.swift in Sources */,
 				F804CA1C2785FF6B00ED6BD1 /* Debug.swift in Sources */,
 				72CDE108A8EB78700E41099A /* ComposableArchitecture.swift in Sources */,
 				F804CA1E2785FF9200ED6BD1 /* Diff.swift in Sources */,
+				F804CA2027882A5500ED6BD1 /* ViewStore.swift in Sources */,
 				F8B07F9A26D37F74009DD184 /* EnumReflection.swift in Sources */,
 				632B3800ADC02D72FD3876C5 /* Effect.swift in Sources */,
 				FAED82C1689B9E30A915BE4A /* Rx+extensions.swift in Sources */,
@@ -640,6 +654,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8B07FB526D3D1A8009DD184 /* FavoritesTests.swift in Sources */,
+				F804CA2A2788364000ED6BD1 /* TestStore.swift in Sources */,
+				F804CA292788363500ED6BD1 /* TestScheduler.swift in Sources */,
 				3BFEE295FDCBB05541F87EB9 /* ComposableArchitectureTestSupport.swift in Sources */,
 				F89FCCC326D4C84400DC5D11 /* AppTests.swift in Sources */,
 				F873475D26CBC899001127A8 /* CounterTests.swift in Sources */,

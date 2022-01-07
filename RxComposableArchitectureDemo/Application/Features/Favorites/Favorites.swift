@@ -40,50 +40,61 @@ public typealias FavoritesEnvironment = (
 public let favoritesReducer: Reducer<FavoritesState, FavoritesAction, FavoritesEnvironment> = .init { state, action, environment in
 	switch action {
 	case .remove:
-		return []
+		return .none
 	
 	case .trivia:
 		state.trivia = nil
 		
 		guard let selected = state.selected else {
-			return []
+			return .none
 		}
+	
+		return .none
+
 		
-		return [
-			environment.trivia(selected).map(FavoritesAction.triviaResponse)
-		]
+//		return [
+//			environment.trivia(selected).map(FavoritesAction.triviaResponse)
+//		]
 		
 	case let .triviaResponse(v):
 		state.trivia = v
-		return []
+		return .none
+
 		
 	case .isPrime:
 		guard let selected = state.selected else {
-			return []
+			return .none
+
 		}
-		
-		return [
-			environment.isPrime(selected).map(FavoritesAction.isPrimeResponse)
-		]
+		return .none
+
+//		return [
+//			environment.isPrime(selected).map(FavoritesAction.isPrimeResponse)
+//		]
 		
 	case let .isPrimeResponse(.success(value)):
 		state.isPrime = value
-		return []
+		return .none
+
 		
 	case let .isPrimeResponse(.failure(e)):
-		return []
+		return .none
+
 		
 	case let .selectAt(index):
 		guard state.favorites.isEmpty == false else {
-			return []
+			return .none
+
 		}
 		
 		guard index >= 0 && index <= state.favorites.count-1 else {
-			return []
+			return .none
+
 		}
 		
 		state.selected = state.favorites[index]
-		return []
+		return .none
+
 		
 	}
 }

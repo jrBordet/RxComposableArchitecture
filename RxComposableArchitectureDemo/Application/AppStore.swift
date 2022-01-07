@@ -8,14 +8,14 @@
 import Foundation
 import RxComposableArchitecture
 
-var applicationStore: Store<AppState, AppAction> =
-  Store(
-    initialValue: initialAppState,
-    reducer: with(
-		appReducer,
-      compose(
-        logging,
-        activityFeed
-    )),
-    environment: live
-)
+//var applicationStore: Store<AppState, AppAction> =
+//  Store(
+//    initialValue: initialAppState,
+//    reducer: with(
+//		appReducer,
+//      compose(
+//      //  logging,
+//        activityFeed
+//    )),
+//    environment: live
+//)

@@ -26,7 +26,7 @@ let genericErrorReducer = Reducer<GenericErrorState, GenericErrorAction, Generic
 	case .dismiss:
 		state.title = ""
 		state.message = ""
-		return []
+		return .none
 	}
 }
 
@@ -94,18 +94,18 @@ let initialAppState = AppState(
 	genericError: nil
 )
 
-func activityFeed(
-	_ reducer: Reducer<AppState, AppAction, AppEnvironment>
-) -> Reducer<AppState, AppAction, AppEnvironment> {
-	return .init { state, action, environment in
-		
-		if case AppAction.counter(CounterAction.incrTapped) = action {
-			os_log("counter %{public}@ ", log: OSLog.counter, type: .info, [action, state])
-		}
-		
-		return reducer(&state, action, environment)
-	}
-}
+//func activityFeed(
+//	_ reducer: Reducer<AppState, AppAction, AppEnvironment>
+//) -> Reducer<AppState, AppAction, AppEnvironment> {
+//	return .init { state, action, environment in
+//		
+//		if case AppAction.counter(CounterAction.incrTapped) = action {
+//			os_log("counter %{public}@ ", log: OSLog.counter, type: .info, [action, state])
+//		}
+//		
+//		return reducer(&state, action, environment)
+//	}
+//}
 
 extension OSLog {
 	private static var subsystem = Bundle.main.bundleIdentifier!

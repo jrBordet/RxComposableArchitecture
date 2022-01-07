@@ -7,7 +7,7 @@
 
 import Foundation
 
-func debugOutput(_ value: Any, indent: Int = 0) -> String {
+public func debugOutput(_ value: Any, indent: Int = 0) -> String {
   var visitedItems: Set<ObjectIdentifier> = []
 
   func debugOutputHelp(_ value: Any, indent: Int = 0) -> String {
@@ -151,13 +151,13 @@ func debugOutput(_ value: Any, indent: Int = 0) -> String {
   return debugOutputHelp(value, indent: indent)
 }
 
-func debugDiff<T>(_ before: T, _ after: T, printer: (T) -> String = { debugOutput($0) }) -> String?
+public func debugDiff<T>(_ before: T, _ after: T, printer: (T) -> String = { debugOutput($0) }) -> String?
 {
   diff(printer(before), printer(after))
 }
 
 extension String {
-  func indent(by indent: Int) -> String {
+  public func indent(by indent: Int) -> String {
 	let indentation = String(repeating: " ", count: indent)
 	return indentation + self.replacingOccurrences(of: "\n", with: "\n\(indentation)")
   }

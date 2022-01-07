@@ -18,6 +18,9 @@ target 'RxComposableArchitectureDemo' do
     pod 'SnapshotTesting', '~> 1.7.2'
     pod 'RxSwift', '6.2.0'
     pod 'RxCocoa', '6.2.0'
+		
+		pod 'RxBlocking', '6.2.0'
+		pod 'RxTest', '6.2.0'
   end
 
 end
@@ -31,5 +34,8 @@ target 'RxComposableArchitecture' do
    pod 'RxCocoa', '6.2.0'
    pod 'SwiftSpinner', '~> 2.1.0'
    pod 'Difference', '0.4'
+	 
+#	 pod 'RxBlocking', '6.2.0'
+#	 pod 'RxTest', '6.2.0'
 
 end

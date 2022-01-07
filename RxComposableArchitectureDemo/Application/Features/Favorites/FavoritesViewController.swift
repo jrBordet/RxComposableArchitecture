@@ -14,7 +14,7 @@ struct Favorite {
 	var value: Int
 }
 
-class FavoritesViewController: UIViewController, StoreViewController {
+class FavoritesViewController: UIViewController {
 	var store: Store<FavoritesState, FavoritesAction>?
 	
 	typealias Value = FavoritesState
@@ -37,32 +37,32 @@ class FavoritesViewController: UIViewController, StoreViewController {
 		
 		tableView.register(UINib(nibName: "FavoriteCell", bundle: nil), forCellReuseIdentifier: "FavoriteCell")
 		
-		store.state.debug("\(self)", trimOutput: false).subscribe().disposed(by: disposeBag)
-				
-		store.state
-			.map { $0.favorites }
-			.map { $0.map { Favorite(value: $0) } }
-			.bind(to: tableView.rx.items(cellIdentifier: "FavoriteCell", cellType: FavoriteCell.self)) { row, item, cell in
-				cell.numberLabel.text = String(item.value)
-			}
-			.disposed(by: disposeBag)
-		
-		tableView.rx
-			.itemSelected
-			.do(afterNext: { _ in
-				store.send(.trivia)
-			})
-			.map { $0.row }
-			.bind(to: store.rx.select)
-			.disposed(by: disposeBag)
-		
-		store.state
-			.map { $0.trivia }
-			.distinctUntilChanged()
-			.ignoreNil()
-			.messageAlertController { }
-			.bind(to: self.rx.presentAlert)
-			.disposed(by: disposeBag)
+//		store.state.debug("\(self)", trimOutput: false).subscribe().disposed(by: disposeBag)
+//
+//		store.state
+//			.map { $0.favorites }
+//			.map { $0.map { Favorite(value: $0) } }
+//			.bind(to: tableView.rx.items(cellIdentifier: "FavoriteCell", cellType: FavoriteCell.self)) { row, item, cell in
+//				cell.numberLabel.text = String(item.value)
+//			}
+//			.disposed(by: disposeBag)
+//
+//		tableView.rx
+//			.itemSelected
+//			.do(afterNext: { _ in
+//				store.send(.trivia)
+//			})
+//			.map { $0.row }
+//			.bind(to: store.rx.select)
+//			.disposed(by: disposeBag)
+//
+//		store.state
+//			.map { $0.trivia }
+//			.distinctUntilChanged()
+//			.ignoreNil()
+//			.messageAlertController { }
+//			.bind(to: self.rx.presentAlert)
+//			.disposed(by: disposeBag)
 		
 	}
 }
