@@ -7,6 +7,7 @@
 
 import Foundation
 import RxComposableArchitecture
+import RxSwift
 
 public struct FavoritesState: Equatable {
 	var selected: Int?
@@ -32,10 +33,31 @@ public enum FavoritesAction: Equatable {
 	case trivia, triviaResponse(String)
 }
 
-public typealias FavoritesEnvironment = (
-	isPrime: (Int) -> Effect<Result<Bool, NSError>>,
-	trivia: (Int) -> Effect<String>
-)
+public struct FavoritesEnvironment {
+	var mainQueue: SchedulerType
+	var isPrime: (Int) -> Effect<Result<Bool, NSError>>
+	var trivia: (Int) -> Effect<String>
+}
+
+extension FavoritesEnvironment {
+	static func mock (
+		mainQueue: SchedulerType = MainScheduler.instance,
+		isPrime: @escaping (Int) -> Effect<Result<Bool, NSError>> = { _ in fatalError() },
+		trivia: @escaping (Int) -> Effect<String> = { _ in fatalError() }
+	) -> FavoritesEnvironment {
+		.init(
+			mainQueue: mainQueue,
+			isPrime: isPrime,
+			trivia: trivia
+		)
+	}
+	
+	static var live: Self = .init(
+		mainQueue: MainScheduler.instance,
+		isPrime: isPrimeEffect,
+		trivia: triviaEffect
+	)
+}
 
 public let favoritesReducer: Reducer<FavoritesState, FavoritesAction, FavoritesEnvironment> = .init { state, action, environment in
 	switch action {
@@ -49,12 +71,11 @@ public let favoritesReducer: Reducer<FavoritesState, FavoritesAction, FavoritesE
 			return .none
 		}
 	
-		return .none
-
-		
-//		return [
-//			environment.trivia(selected).map(FavoritesAction.triviaResponse)
-//		]
+		return environment
+			.trivia(selected)
+			.observe(on: environment.mainQueue)
+			.map(FavoritesAction.triviaResponse)
+			.eraseToEffect()
 		
 	case let .triviaResponse(v):
 		state.trivia = v
@@ -66,11 +87,12 @@ public let favoritesReducer: Reducer<FavoritesState, FavoritesAction, FavoritesE
 			return .none
 
 		}
-		return .none
 
-//		return [
-//			environment.isPrime(selected).map(FavoritesAction.isPrimeResponse)
-//		]
+		return environment
+			.isPrime(selected)
+			.observe(on: environment.mainQueue)
+			.map(FavoritesAction.isPrimeResponse)
+			.eraseToEffect()
 		
 	case let .isPrimeResponse(.success(value)):
 		state.isPrime = value
