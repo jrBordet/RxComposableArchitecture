@@ -20,57 +20,53 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		self.window = UIWindow(frame: UIScreen.main.bounds)
 		
 		// MARK: - Counter
+				
+		let counterStore = applicationStore.scope(
+			state: { $0.counterView },
+			action: { .counter($0) }
+		)
 		
-		let counter = Scene<CounterViewController>()
-			.render()
-			.apply {
-				$0.store = applicationStore.scope(
-					value: { $0.counterView },
-					action: { .counter($0) }
-				)
-			}
-		
-		let counterNav = UINavigationController(rootViewController: counter)
+		let counter = CounterViewController(
+			store: counterStore
+		)
 		
 		// MARK: - Favorites
 		
-		let favorites = Scene<FavoritesViewController>()
-			.render()
-			.apply {
-				$0.store = applicationStore.scope(
-					value: { $0.favoritesView },
-					action: { .favorites($0) }
-				)
-			}
+		let favorites = FavoritesViewController(
+			store: applicationStore.scope(
+				state: { $0.favoritesView },
+				action: { .favorites($0) }
+			)
+		)
 		
 		// MARK: - Handle global GENERIC ERROR
 		
-		applicationStore.state
-			.map { $0.genericError }
-			.ignoreNil()
-			.subscribe { (state: GenericErrorState) in
-				if let topVC = UIApplication.getTopViewController() {
-					let ac = UIAlertController(
-						title: state.title,
-						message: state.message,
-						preferredStyle: UIAlertController.Style.alert
-					)
-					
-					ac.addAction(
-						UIAlertAction(
-							title: "dismiss",
-							style: UIAlertAction.Style.cancel,
-							handler: { (a: UIAlertAction) in
-								applicationStore.send(AppAction.genericError(GenericErrorAction.dismiss))
-							}
-						)
-					)
-					
-					topVC.present(ac, animated: true, completion: nil)
-				}
-				
-			}.disposed(by: disposeBag)
-		
+//		applicationStore.state
+//			.map { $0.genericError }
+//			.ignoreNil()
+//			.subscribe { (state: GenericErrorState) in
+//				if let topVC = UIApplication.getTopViewController() {
+//					let ac = UIAlertController(
+//						title: state.title,
+//						message: state.message,
+//						preferredStyle: UIAlertController.Style.alert
+//					)
+//
+//					ac.addAction(
+//						UIAlertAction(
+//							title: "dismiss",
+//							style: UIAlertAction.Style.cancel,
+//							handler: { (a: UIAlertAction) in
+//								applicationStore.send(AppAction.genericError(GenericErrorAction.dismiss))
+//							}
+//						)
+//					)
+//
+//					topVC.present(ac, animated: true, completion: nil)
+//				}
+//
+//			}.disposed(by: disposeBag)
+
 				
 		// Tab bar
 		let tabBarController = UITabBarController()
@@ -78,11 +74,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let item1 = UITabBarItem(title: "Counter", image: UIImage(named: ""), tag: 0)
 		let item2 = UITabBarItem(title: "Favorites", image:  UIImage(named: ""), tag: 1)
 		
-		counterNav.tabBarItem = item1
+		counter.tabBarItem = item1
 		favorites.tabBarItem = item2
 		
 		tabBarController.setViewControllers([
-			counterNav,
+			counter,
 			favorites
 		], animated: false)
 		

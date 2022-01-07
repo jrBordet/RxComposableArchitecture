@@ -14,7 +14,8 @@ public extension Reactive where Base: Store<FavoritesState, FavoritesAction> {
 	
 	var select: Binder<Int> {
 		Binder(self.base) { store, value in
-			store.send(FavoritesAction.selectAt(value))
+			fatalError()
+			//store.send(FavoritesAction.selectAt(value))
 		}
 	}
 }

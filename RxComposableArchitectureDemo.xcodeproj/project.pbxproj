@@ -18,7 +18,7 @@
 		632B3800ADC02D72FD3876C5 /* Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B324C1C46D96582124ADDD /* Effect.swift */; };
 		72CDE108A8EB78700E41099A /* ComposableArchitecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = F310CE10DC638153FE5881D4 /* ComposableArchitecture.swift */; };
 		84BED1BE7971E35F6D47F394 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5187865AF0D5E49500B89236 /* LaunchScreen.storyboard */; };
-		8D4CCD712D4BE17074E88DA7 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E338260A654C3B1BDD45E05A /* Environment.swift */; };
+		8D4CCD712D4BE17074E88DA7 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E338260A654C3B1BDD45E05A /* AppEnvironment.swift */; };
 		B432C493AFE13AAE38B95878 /* RxComposableArchitecture.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 881C79922FFBC8E5F0327FBB /* RxComposableArchitecture.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B62653DC37C26CC7C0DEB4DC /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07DA406F4CF76EEFD014B74 /* AppStore.swift */; };
 		C471F54D8464C5866325DAB1 /* AppReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683276346E4E459AC99B8D0C /* AppReducer.swift */; };
@@ -26,6 +26,15 @@
 		E5C2D5C2CCE42DDE57612DB2 /* RxComposableArchitecture.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C75443BF5F257E58284F3C7 /* RxComposableArchitecture.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E7F770296DB7DB260B7D7754 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E7AEC6B172594567AE29B /* AppDelegate.swift */; };
 		EAC0EB863F53D543A66B2545 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906C624376962C4679C5FA65 /* Counter.swift */; };
+		F804CA142785FBB200ED6BD1 /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA132785FBB200ED6BD1 /* Reducer.swift */; };
+		F804CA162785FC4100ED6BD1 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA152785FC4100ED6BD1 /* Store.swift */; };
+		F804CA1C2785FF6B00ED6BD1 /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA1B2785FF6B00ED6BD1 /* Debug.swift */; };
+		F804CA1E2785FF9200ED6BD1 /* Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA1D2785FF9200ED6BD1 /* Diff.swift */; };
+		F804CA2027882A5500ED6BD1 /* ViewStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA1F27882A5500ED6BD1 /* ViewStore.swift */; };
+		F804CA292788363500ED6BD1 /* TestScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA2227882F6F00ED6BD1 /* TestScheduler.swift */; };
+		F804CA2A2788364000ED6BD1 /* TestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA192785FE3300ED6BD1 /* TestStore.swift */; };
+		F804CA2E27884C8A00ED6BD1 /* ReducerDebugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA2D27884C8A00ED6BD1 /* ReducerDebugging.swift */; };
+		F804CA3027884CD900ED6BD1 /* ReducerInstrumentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804CA2F27884CD900ED6BD1 /* ReducerInstrumentation.swift */; };
 		F873475D26CBC899001127A8 /* CounterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F873475C26CBC899001127A8 /* CounterTests.swift */; };
 		F89FCCC326D4C84400DC5D11 /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89FCCC226D4C84400DC5D11 /* AppTests.swift */; };
 		F89FCCCB26D4CB9400DC5D11 /* CounterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89FCCC926D4CB9400DC5D11 /* CounterViewController.swift */; };
@@ -109,9 +118,18 @@
 		C7D4B60681078E0875B6A775 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CA2E7AEC6B172594567AE29B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D17F3CC0C0CD07F2754B813F /* Pods_RxComposableArchitecture.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxComposableArchitecture.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E338260A654C3B1BDD45E05A /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		E338260A654C3B1BDD45E05A /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		F07DA406F4CF76EEFD014B74 /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
 		F310CE10DC638153FE5881D4 /* ComposableArchitecture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposableArchitecture.swift; sourceTree = "<group>"; };
+		F804CA132785FBB200ED6BD1 /* Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reducer.swift; sourceTree = "<group>"; };
+		F804CA152785FC4100ED6BD1 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		F804CA192785FE3300ED6BD1 /* TestStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStore.swift; sourceTree = "<group>"; };
+		F804CA1B2785FF6B00ED6BD1 /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
+		F804CA1D2785FF9200ED6BD1 /* Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diff.swift; sourceTree = "<group>"; };
+		F804CA1F27882A5500ED6BD1 /* ViewStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStore.swift; sourceTree = "<group>"; };
+		F804CA2227882F6F00ED6BD1 /* TestScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestScheduler.swift; sourceTree = "<group>"; };
+		F804CA2D27884C8A00ED6BD1 /* ReducerDebugging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReducerDebugging.swift; sourceTree = "<group>"; };
+		F804CA2F27884CD900ED6BD1 /* ReducerInstrumentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReducerInstrumentation.swift; sourceTree = "<group>"; };
 		F873475C26CBC899001127A8 /* CounterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterTests.swift; sourceTree = "<group>"; };
 		F89FCCC226D4C84400DC5D11 /* AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTests.swift; sourceTree = "<group>"; };
 		F89FCCC926D4CB9400DC5D11 /* CounterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterViewController.swift; sourceTree = "<group>"; };
@@ -224,10 +242,16 @@
 		47D3CF61B68DACA787E6B9D0 /* ComposableArchitecture */ = {
 			isa = PBXGroup;
 			children = (
+				F804CA2C27884C7500ED6BD1 /* Debugging */,
 				F310CE10DC638153FE5881D4 /* ComposableArchitecture.swift */,
 				F8B07FA526D37FBA009DD184 /* CasePath */,
 				44B324C1C46D96582124ADDD /* Effect.swift */,
 				597890C21E4C3A1EC1345D79 /* Utils.swift */,
+				F804CA132785FBB200ED6BD1 /* Reducer.swift */,
+				F804CA152785FC4100ED6BD1 /* Store.swift */,
+				F804CA1B2785FF6B00ED6BD1 /* Debug.swift */,
+				F804CA1D2785FF9200ED6BD1 /* Diff.swift */,
+				F804CA1F27882A5500ED6BD1 /* ViewStore.swift */,
 			);
 			path = ComposableArchitecture;
 			sourceTree = "<group>";
@@ -246,7 +270,9 @@
 		87F49BD9BC4D4F3A5E22237F /* RxComposableArchitectureTests */ = {
 			isa = PBXGroup;
 			children = (
+				F804CA2127882F5600ED6BD1 /* Helpers */,
 				B671875B6FD166D1E2DB6236 /* ComposableArchitectureTestSupport.swift */,
+				F804CA192785FE3300ED6BD1 /* TestStore.swift */,
 				5D935005D78AF6C717627729 /* Info.plist */,
 			);
 			path = RxComposableArchitectureTests;
@@ -260,7 +286,7 @@
 				683276346E4E459AC99B8D0C /* AppReducer.swift */,
 				4EC4B0FE2E6CDF5991338F1B /* AppState.swift */,
 				F07DA406F4CF76EEFD014B74 /* AppStore.swift */,
-				E338260A654C3B1BDD45E05A /* Environment.swift */,
+				E338260A654C3B1BDD45E05A /* AppEnvironment.swift */,
 				0A87B7447DB682E0B629909A /* Features */,
 			);
 			path = Application;
@@ -295,6 +321,23 @@
 				9A4A3D9BA69625AB3E32964A /* Application */,
 			);
 			path = RxComposableArchitectureDemo;
+			sourceTree = "<group>";
+		};
+		F804CA2127882F5600ED6BD1 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				F804CA2227882F6F00ED6BD1 /* TestScheduler.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		F804CA2C27884C7500ED6BD1 /* Debugging */ = {
+			isa = PBXGroup;
+			children = (
+				F804CA2D27884C8A00ED6BD1 /* ReducerDebugging.swift */,
+				F804CA2F27884CD900ED6BD1 /* ReducerInstrumentation.swift */,
+			);
+			path = Debugging;
 			sourceTree = "<group>";
 		};
 		F89FCCC726D4CB7400DC5D11 /* Counter */ = {
@@ -595,7 +638,7 @@
 				B62653DC37C26CC7C0DEB4DC /* AppStore.swift in Sources */,
 				EAC0EB863F53D543A66B2545 /* Counter.swift in Sources */,
 				F8C0227026D4F56D004CE411 /* FavoriteCell.swift in Sources */,
-				8D4CCD712D4BE17074E88DA7 /* Environment.swift in Sources */,
+				8D4CCD712D4BE17074E88DA7 /* AppEnvironment.swift in Sources */,
 				F89FCCCB26D4CB9400DC5D11 /* CounterViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -604,11 +647,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F804CA1C2785FF6B00ED6BD1 /* Debug.swift in Sources */,
 				72CDE108A8EB78700E41099A /* ComposableArchitecture.swift in Sources */,
+				F804CA1E2785FF9200ED6BD1 /* Diff.swift in Sources */,
+				F804CA2027882A5500ED6BD1 /* ViewStore.swift in Sources */,
 				F8B07F9A26D37F74009DD184 /* EnumReflection.swift in Sources */,
 				632B3800ADC02D72FD3876C5 /* Effect.swift in Sources */,
+				F804CA3027884CD900ED6BD1 /* ReducerInstrumentation.swift in Sources */,
 				FAED82C1689B9E30A915BE4A /* Rx+extensions.swift in Sources */,
 				F8B07F9C26D37F74009DD184 /* CasePath.swift in Sources */,
+				F804CA162785FC4100ED6BD1 /* Store.swift in Sources */,
+				F804CA2E27884C8A00ED6BD1 /* ReducerDebugging.swift in Sources */,
+				F804CA142785FBB200ED6BD1 /* Reducer.swift in Sources */,
 				16C1B0D0F381C1B7ECA00514 /* Utils.swift in Sources */,
 				F8B07FA126D37F8F009DD184 /* CasePaths.swift in Sources */,
 				F8B07F9B26D37F74009DD184 /* Operators.swift in Sources */,
@@ -620,6 +670,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8B07FB526D3D1A8009DD184 /* FavoritesTests.swift in Sources */,
+				F804CA2A2788364000ED6BD1 /* TestStore.swift in Sources */,
+				F804CA292788363500ED6BD1 /* TestScheduler.swift in Sources */,
 				3BFEE295FDCBB05541F87EB9 /* ComposableArchitectureTestSupport.swift in Sources */,
 				F89FCCC326D4C84400DC5D11 /* AppTests.swift in Sources */,
 				F873475D26CBC899001127A8 /* CounterTests.swift in Sources */,

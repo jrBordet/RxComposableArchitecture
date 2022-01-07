@@ -10,25 +10,28 @@ import RxComposableArchitecture
 
 let appReducer: Reducer<AppState, AppAction, AppEnvironment> = Reducer.combine(
 	counterReducer.pullback(
-		value: \AppState.counterView,
+		state: \AppState.counterView,
 		action: /AppAction.counter,
 		environment: { $0.counter }
 	),
 	favoritesReducer.pullback(
-		value: \AppState.favoritesView,
+		state: \AppState.favoritesView,
 		action: /AppAction.favorites,
-		environment: { $0.counter }
+		environment: { $0.favorites }
 	),
-	genericErrorReducer.optional.pullback(
-		value: \AppState.genericErrorView,
+	genericErrorReducer
+		.optional()
+		.pullback(
+		state: \AppState.genericErrorView,
 		action: /AppAction.genericError,
 		environment: { _ in GenericErrorEnvironment() }
-	), Reducer<AppState, AppAction, AppEnvironment> { state, action, env -> [Effect<AppAction>] in
+	),
+	Reducer<AppState, AppAction, AppEnvironment> { state, action, env -> Effect<AppAction> in
 		if case AppAction.genericError(GenericErrorAction.dismiss) = action {
 			state.genericError = nil
-			return []
+			return .none
 		}
 		
-		return []
+		return .none
 	}
 )

@@ -14,32 +14,31 @@ struct Favorite {
 	var value: Int
 }
 
-class FavoritesViewController: UIViewController, StoreViewController {
-	var store: Store<FavoritesState, FavoritesAction>?
-	
-	typealias Value = FavoritesState
-	typealias Action = FavoritesAction
-	
+class FavoritesViewController: UIViewController {
 	@IBOutlet var tableView: UITableView!
 	
-	private let disposeBag = DisposeBag()
+	let viewStore: ViewStore<FavoritesState, FavoritesAction>
+	var disposeBag = DisposeBag()
+	
+	init(store: Store<FavoritesState, FavoritesAction>) {
+		self.viewStore = ViewStore(store)
+		super.init(nibName: nil, bundle: nil)
+	}
+	
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		guard let store = self.store else {
-			fatalError()
-		}
 		
 		tableView.rx
 			.setDelegate(self)
 			.disposed(by: disposeBag)
 		
 		tableView.register(UINib(nibName: "FavoriteCell", bundle: nil), forCellReuseIdentifier: "FavoriteCell")
-		
-		store.state.debug("\(self)", trimOutput: false).subscribe().disposed(by: disposeBag)
 				
-		store.state
+		viewStore.publisher
 			.map { $0.favorites }
 			.map { $0.map { Favorite(value: $0) } }
 			.bind(to: tableView.rx.items(cellIdentifier: "FavoriteCell", cellType: FavoriteCell.self)) { row, item, cell in
@@ -49,14 +48,18 @@ class FavoritesViewController: UIViewController, StoreViewController {
 		
 		tableView.rx
 			.itemSelected
-			.do(afterNext: { _ in
-				store.send(.trivia)
+			.do(afterNext: { [weak self] _ in
+				guard let self = self else {
+					return
+				}
+				
+				self.viewStore.send(.trivia)
 			})
 			.map { $0.row }
-			.bind(to: store.rx.select)
+			.bind { [weak self] in self?.viewStore.send(FavoritesAction.selectAt($0)) }
 			.disposed(by: disposeBag)
 		
-		store.state
+		viewStore.publisher
 			.map { $0.trivia }
 			.distinctUntilChanged()
 			.ignoreNil()
