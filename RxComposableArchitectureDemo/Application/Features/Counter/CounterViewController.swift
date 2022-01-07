@@ -91,6 +91,7 @@ class CounterViewController: UIViewController {
 					.map { (fav: $0.favorites, counter: $0.count) }
 					.map { $0.contains($1) } // true: remove; false: add
 			}
+			.observe(on:MainScheduler.asyncInstance)
 			.bind { [weak self] value in
 				if value {
 					self?.viewStore.send(CounterAction.removeFavorite)
